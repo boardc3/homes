@@ -13,7 +13,7 @@
 <body>
 <header class="top">
   <a class="brand" href="#story"><span class="mark"></span>Homes</a>
-  <nav><a href="#story">Story</a><a href="#renderings">Renderings</a><a href="#film">Film</a><a href="#elevations">Elevations</a><a href="#plan">Plan</a><a href="#rake">Drainage</a><a href="#numbers">Numbers</a></nav>
+  <nav><a href="#story">Story</a><a href="#renderings">Renderings</a><a href="#model">3D model</a><a href="#film">Film</a><a href="#elevations">Elevations</a><a href="#plan">Plan</a><a href="#rake">Drainage</a><a href="#numbers">Numbers</a></nav>
 </header>
 
 <section id="story" aria-label="Build story: from bare ground to a place in the wild">
@@ -56,6 +56,27 @@
   <div class="gallery" id="gallery"></div>
 </section>
 
+<section id="model" class="block viewer-sec">
+  <div class="block-head">
+    <p class="eyebrow">3D model</p>
+    <h2>Beams or built.</h2>
+    <p>The same model two ways. Beams shows the steel exactly as drawn. Realistic closes it in with the concept finishes and sets it by the lake. Drag to turn it, or pick a view.</p>
+  </div>
+  <div id="viewer">
+    <canvas id="viewer-canvas" aria-label="3D model of the house; drag to rotate"></canvas>
+    <div class="v-top">
+      <div class="seg" id="look" role="group" aria-label="Look">
+        <button data-look="beams" aria-pressed="true">Beams</button><button data-look="real" aria-pressed="false">Realistic</button>
+      </div>
+      <div class="views" id="views" role="group" aria-label="View">
+        <button data-v="iso" aria-pressed="true">Iso</button><button data-v="lake" aria-pressed="false">Lake</button><button data-v="north" aria-pressed="false">N</button><button data-v="east" aria-pressed="false">E</button><button data-v="south" aria-pressed="false">S</button><button data-v="west" aria-pressed="false">W</button><button data-v="top" aria-pressed="false">Top</button>
+      </div>
+    </div>
+    <p class="v-note" id="viewer-note"></p>
+    <p class="v-hint">Drag to turn</p>
+  </div>
+</section>
+
 <section id="film" class="film-sec">
   <p class="eyebrow">The build in 29 seconds</p>
   <h2>Nothing to finished frame.</h2>
@@ -76,7 +97,7 @@
   <div class="block-head">
     <p class="eyebrow">Plan</p>
     <h2>Fifteen squares, one ring.</h2>
-    <p>The platform is 606 in. × 396 in. overall (50 ft 6 in. × 33 ft). Gray cells are the living area. The three dashed white cells are the patio.</p>
+    <p>The platform is 606 in. × 396 in. overall (50 ft 6 in. × 33 ft). Gray cells are the interior: two 12 ft × 16 ft bedrooms on the left and the 16 ft × 24 ft living area on the right. The three dashed white cells are the patio.</p>
   </div>
   <div class="plan-wrap">
     <div class="plan" id="plan-svg"></div>
@@ -87,6 +108,7 @@
       <li><i class="dash"></i>White patio, 3 cells</li>
       <li><i style="background:#c0392b"></i>Red tower columns, 12, 15 ft above the deck</li>
       <li><i style="background:#1f6f8b"></i>Teal frame posts and canopy uprights</li>
+      <li><i style="background:#1f6f8b;border-radius:50%"></i>Bedroom post moved into the partition at x = 147.5 in.</li>
       <li><i style="background:#0a5fb4"></i>54 legs, 10 in. tall, on 10 in. × 10 in. plates</li>
     </ul>
   </div>

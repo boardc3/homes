@@ -1,6 +1,7 @@
 import './style.css';
 import { stages, dims, N, fmt } from './scene.js';
 import { initStory } from './story.js';
+import { initViewer } from './viewer.js';
 import north from './data/elev_north.svg?raw';
 import south from './data/elev_south.svg?raw';
 import east from './data/elev_east.svg?raw';
@@ -9,6 +10,7 @@ import planRaw from './data/plan.svg?raw';
 const $ = (id) => document.getElementById(id);
 
 initStory();
+initViewer();
 
 /* renderings */
 const SHOTS = [

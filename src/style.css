@@ -123,3 +123,21 @@ footer{padding:36px clamp(16px,4vw,48px);font-family:var(--mono);font-size:12px;
  .top nav{display:none}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}#cue i{animation:none}#cap.in{animation:none}}
+
+/* 3D viewer */
+#viewer{position:relative;aspect-ratio:16/9;max-height:82svh;width:100%;border-radius:16px;overflow:hidden;border:1px solid var(--line);
+  background:radial-gradient(1000px 600px at 50% 45%,#fbfaf6,var(--paper2));cursor:grab}
+#viewer:active{cursor:grabbing}
+#viewer-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.v-top{position:absolute;left:16px;right:16px;top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;pointer-events:none}
+.v-top>*{pointer-events:auto}
+.seg,.views{display:flex;gap:4px;background:rgba(250,248,242,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:4px;border-radius:999px;border:1px solid rgba(20,23,26,.1)}
+.seg button,.views button{all:unset;cursor:pointer;font:600 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border-radius:999px;color:var(--mute)}
+.seg button{padding:10px 18px;font-size:13px}
+.seg button[aria-pressed=true],.views button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible,.views button:focus-visible{outline:2px solid var(--teal)}
+.v-note{position:absolute;left:16px;bottom:16px;max-width:min(520px,calc(100% - 32px));margin:0;font-size:14px;color:#2b2f33;
+  background:rgba(250,248,242,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:12px 14px;border-radius:12px;border:1px solid rgba(20,23,26,.08)}
+.v-hint{position:absolute;right:18px;bottom:20px;margin:0;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+#viewer.is-real .v-hint{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+@media (max-width:700px){#viewer{aspect-ratio:4/5}.views button{padding:8px 9px}.v-hint{display:none}}

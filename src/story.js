@@ -16,7 +16,7 @@ const SPAN = (P_FRAME1 - P_FRAME0) / (N - 1);
 const stageStart = (s) => P_FRAME0 + (s - 1) * SPAN;
 const ENC = [                         // enclosure layers, in build order
   { key: 'deck',  kinds: ['deck', 'floor'], t: 'Deck and floors', n: 'Oiled ipe decking over the whole platform: 1,666.5 sq ft. Inside the two pavilions, 720.8 sq ft of finished floor.' },
-  { key: 'walls', kinds: ['cedar', 'glass'], t: 'Walls', n: 'Floor-to-ceiling glass in black steel frames faces the lake on the north and east. Charred cedar closes the south and west.' },
+  { key: 'walls', kinds: ['cedar', 'glass', 'wall'], t: 'Walls', n: 'Floor-to-ceiling glass in black steel frames faces the lake on the north and east. Charred cedar closes the south and west. One partition splits the left block into two 12 ft × 16 ft bedrooms, with the frame post inside it.' },
   { key: 'roofs', kinds: ['roof'], t: 'Roofs', n: 'Left: a 12 in. drainage fall from north to south. Right: a shed roof from 14 ft at the spine down to 10 ft at the east edge.' },
   { key: 'spine', kinds: ['spine'], t: 'The spine', n: 'The twelve red tower columns are clad as one weathering-steel fin, 16.5 ft tall, the full depth of the house.' },
 ];
@@ -67,7 +67,7 @@ export function initStory() {
   fp.computeLineDistances(); scene.add(fp);
 
   // enclosure layers (same geometry as the photoreal references)
-  const ENC_COL = { deck: '#b98a5e', floor: '#c9c6bf', spine: '#9c4a26', roof: '#4f5357', cedar: '#5b4230', glass: '#9fc4d6' };
+  const ENC_COL = { wall: '#e9e4da', deck: '#b98a5e', floor: '#c9c6bf', spine: '#9c4a26', roof: '#4f5357', cedar: '#5b4230', glass: '#9fc4d6' };
   const layers = ENC.map(() => []);
   for (const it of bo) {
     const li = ENC.findIndex((L) => L.kinds.includes(it.c)); if (li < 0) continue;

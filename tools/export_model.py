@@ -86,14 +86,15 @@ MARK={}; CAN=0
 FR_BOX=[];FR_SLOPE=[];LEN={'post':0,'rail':0};CNT={'post':0,'rail':0}
 LTOP=DECK+H11
 MARK['start']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# left posts + flat top rails
-for x in (2,99,196):
-    for y in (2,99,196):
-        FR_BOX.append(('p',x-2,y-2,4,4,DECK,LTOP-4-dL(y))); LEN['post']+=LTOP-4-dL(y)-DECK; CNT['post']+=1
-for y in (2,99,196):
-    for xa,xb in ((2,99),(99,196),(196,293)):
+# left posts + flat top rails  (3x2 left block = two bedrooms, split at x=147.5;
+# the two interior posts that stood mid-room at (99,99),(196,99) move into the partition at (147.5,99))
+LPOSTS=[(x,y) for x in (2,99,196) for y in (2,196)]+[(2,99),(147.5,99)]
+for x,y in LPOSTS:
+    FR_BOX.append(('p',x-2,y-2,4,4,DECK,LTOP-4-dL(y))); LEN['post']+=LTOP-4-dL(y)-DECK; CNT['post']+=1
+for y,segs in ((2,((2,99),(99,196),(196,293))),(196,((2,99),(99,196),(196,293))),(99,((2,147.5),(147.5,293)))):
+    for xa,xb in segs:
         FR_BOX.append(('r',xa+2,y-2,xb-xa-4,4,LTOP-4-dL(y),LTOP-dL(y))); LEN['rail']+=xb-xa-4; CNT['rail']+=1
-for x in (2,99,196,293):
+for x in (2,147.5,293):
     for ya,yb_ in ((2,99),(99,196)):
         LEN['rail']+=tiltL(x,ya+2,yb_-2,4,4); CNT['rail']+=1
 MARK['left_end']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
@@ -182,8 +183,8 @@ for i,j,bb in cells:
 add('floors','Gray floor and patio',fl,0,0,'Twelve 93 in. x 93 in. gray floor cells make the living area. The three white cells at the north end are the patio.',len(fl))
 tw=[('col',hexa(cx-2,cy-2,4,4,DECK,CT)) for cx,cy in cols]+[('cap',hexa(x,y,w,h,CT,CT+T)) for x,y,w,h in rails+rungs]
 add('tower','Red tower columns',tw,(coltot+captot)/12,0,'Twelve 4 in. x 4 in. columns rise 15 ft above the deck at x = 293 and 309, joined by cap rails and rungs.',len(tw))
-add('left','Left block frame (raked)',seg('start','left_end'),L4('start','left_end'),0,'Flat-plan teal frame over the gray cells: 11 ft above the deck at the patio edge, falling 1 ft toward the south end so water drains away from the patio.',0)
-add('right','Right block frame (sloped)',seg('left_end','right_end'),L4('left_end','right_end'),0,'The 2 x 3 block roof slopes from 14 ft above the deck at the tower down to 10 ft at the far east edge.',0)
+add('left','Bedroom block frame (raked)',seg('start','left_end'),L4('start','left_end'),0,'Frame over the two bedrooms (the 3 x 2 left block): 11 ft above the deck at the patio edge, falling 12 in. to the south. Its one interior post stands in the wall between the bedrooms at x = 147.5 in., so each 12 ft x 16 ft room is clear.',0)
+add('right','Living block frame (sloped)',seg('left_end','right_end'),L4('left_end','right_end'),0,'Frame over the 2 x 3 living area. Its roof slopes from 14 ft above the deck at the tower down to 10 ft at the far east edge.',0)
 add('canopy_sw','Canopy: west and south joists',seg('can0','can_sw_end'),0,LC('can0','can_sw_end'),'3 in. x 2 in. joists about every 48.5 in. over the west and south perimeter squares, raking with the roof.',0)
 add('canopy_patio','Canopy: patio extension',seg('can_sw_end','can_patio_end'),0,LC('can_sw_end','can_patio_end'),'The canopy continues over the white patio cells and north border, still in 3 in. x 2 in. tube, on the same continuous 1 ft fall.',0)
 add('canopy_right','Canopy: right block',seg('can_patio_end','can_right_end'),0,LC('can_patio_end','can_right_end'),'South, north and east joists over the perimeter squares of the sloped right block.',0)
@@ -276,5 +277,6 @@ wall('cedar',4,291,1,3,LT)            # left south – cedar
 wall('glass',311,501,292,294,RT)      # right north – glass
 wall('glass',502,504,4,291,RT)        # right east – glass
 wall('cedar',311,501,1,3,RT)          # right south – cedar
+wall('wall',146,149,4,194,LT)         # bedroom partition (holds the moved post at x=147.5)
 json.dump(BO,open('/home/claude/site/data/buildout.json','w'),separators=(',',':'))
 print('buildout items',len(BO))
