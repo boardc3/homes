@@ -115,3 +115,7 @@ const members = (s) => s.id === 'footings' ? 54 : s.id === 'floors' ? 15 : s.ite
 $('stage-table').innerHTML = `<thead><tr><th>#</th><th>Assembly</th><th class="num">Members</th><th class="num">4 in. × 4 in. ft</th><th class="num">3 in. × 2 in. ft</th><th class="num">Running 4 in.</th><th class="num">Running 3×2</th></tr></thead><tbody>` +
   stages.slice(1).map((s, k) => `<tr><td>${k + 1}</td><td>${s.title}</td><td class="num">${members(s)}</td><td class="num">${s.l4 ? fmt(s.l4) : '—'}</td><td class="num">${s.l3 ? fmt(s.l3) : '—'}</td><td class="num">${fmt(s.cum4)}</td><td class="num">${fmt(s.cum3)}</td></tr>`).join('') +
   `<tr><td></td><td>Finished build</td><td class="num"></td><td class="num">${fmt(dims.l4)}</td><td class="num">${fmt(dims.l3)}</td><td class="num"></td><td class="num"></td></tr></tbody>`;
+
+/* ------------------------------------------------------------- film: play when on screen */
+const vid = document.getElementById('film-video');
+if (vid) new IntersectionObserver((es) => { for (const e of es) { if (e.isIntersecting) vid.play().catch(() => {}); else vid.pause(); } }, { threshold: .35 }).observe(vid);

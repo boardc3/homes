@@ -1,17 +1,28 @@
 <!doctype html><html><head><meta charset="utf-8"><title>film</title>
-<style>html,body{margin:0;background:#f3f0e8;overflow:hidden;font-family:ui-sans-serif,system-ui,sans-serif}
+<style>
+html,body{margin:0;background:#f3f0e8;overflow:hidden;font-family:ui-sans-serif,system-ui,sans-serif;color:#14171a}
 canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block}
-.o{position:fixed;left:48px;bottom:44px;color:#14171a}
-.o small{display:block;font:600 15px ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;color:#1f6f8b;margin-bottom:8px}
-.o h1{margin:0;font:600 64px/1 ui-serif,Georgia,serif;letter-spacing:-.01em}
-.c{position:fixed;right:48px;top:30px;display:flex;gap:44px;color:#14171a;text-align:right}
-.c b{display:block;font:600 56px/1 ui-serif,Georgia,serif;font-variant-numeric:tabular-nums}
-.c span{font:600 12px ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:#5d6166}
-.b{position:fixed;left:48px;top:36px;font:600 26px ui-serif,Georgia,serif;color:#14171a}
-.p{position:fixed;left:0;bottom:0;height:6px;background:#14171a}
+.tl{position:fixed;left:3.4vw;top:3.2vw;max-width:56vw}
+.brand{font:600 1.45vw/1 ui-serif,Georgia,serif;display:flex;align-items:center;gap:.6vw;margin-bottom:2.3vw}
+.brand i{width:.9vw;height:.9vw;border:.16vw solid #14171a;border-bottom-color:#e0a030;border-radius:.15vw;transform:rotate(45deg)}
+.k{font:600 .82vw/1 ui-monospace,Menlo,monospace;letter-spacing:.18em;text-transform:uppercase;color:#1f6f8b;margin-bottom:.8vw}
+.t{font:600 3.3vw/1.02 ui-serif,Georgia,serif;letter-spacing:-.01em;margin:0}
+.tl .k,.tl .t{transition:none}
+.tr{position:fixed;right:3.4vw;top:3.2vw;display:flex;gap:2.6vw;text-align:right}
+.f b{display:block;font:600 2.7vw/1 ui-serif,Georgia,serif;font-variant-numeric:tabular-nums}
+.f span{display:block;margin-top:.5vw;font:600 .66vw/1.2 ui-monospace,Menlo,monospace;letter-spacing:.09em;text-transform:uppercase;color:#5d6166}
+.f.extra{opacity:0}
+.bar{position:fixed;left:3.4vw;right:3.4vw;bottom:2.6vw;display:flex;gap:.45vw}
+.bar s{flex:1;height:.32vw;background:#d6d1c4;border-radius:1vw;overflow:hidden;position:relative;text-decoration:none}
+.bar s u{position:absolute;inset:0;width:0;background:#14171a}
 </style></head><body>
-<canvas id="c"></canvas><div class="b">Homes</div>
-<div class="o"><small id="k"></small><h1 id="t"></h1></div>
-<div class="c"><div><b id="a">0.0</b><span>ft of 4 in. × 4 in. tube</span></div><div><b id="d">0.0</b><span>ft of 3 in. × 2 in. tube</span></div></div>
-<div class="p" id="p"></div>
+<canvas id="c"></canvas>
+<div class="tl"><div class="brand"><i></i>Homes</div><div class="k" id="k"></div><h1 class="t" id="t"></h1></div>
+<div class="tr">
+  <div class="f extra" id="fa"><b>720.8</b><span>sq ft gray<br>living area</span></div>
+  <div class="f extra" id="fb"><b>1,666.5</b><span>sq ft entire<br>platform</span></div>
+  <div class="f"><b id="a">0.0</b><span>ft of 4 in. ×<br>4 in. tube</span></div>
+  <div class="f"><b id="d">0.0</b><span>ft of 3 in. ×<br>2 in. tube</span></div>
+</div>
+<div class="bar" id="bar"></div>
 <script type="module" src="/src/film.js"></script></body></html>
