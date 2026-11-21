@@ -15,8 +15,8 @@ const P_FRAME0 = .06, P_FRAME1 = .60, P_ENC1 = .80, P_CAM = .88, P_REAL0 = .86, 
 const SPAN = (P_FRAME1 - P_FRAME0) / (N - 1);
 const stageStart = (s) => P_FRAME0 + (s - 1) * SPAN;
 const ENC = [                         // enclosure layers, in build order
-  { key: 'deck',  kinds: ['deck', 'floor'], t: 'Deck and floors', n: 'Oiled ipe decking over the whole platform: 1,666.5 sq ft. Inside the two pavilions, 720.8 sq ft of finished floor.' },
-  { key: 'walls', kinds: ['cedar', 'glass', 'wall'], t: 'Walls', n: 'Floor-to-ceiling glass in black steel frames faces the lake on the north and east. Charred cedar closes the south and west. One partition splits the left block into two 12 ft × 16 ft bedrooms, with the frame post inside it.' },
+  { key: 'deck',  kinds: ['deck', 'floor'], t: 'Deck and floors', n: 'Oiled ipe decking over the whole platform: 1,666.5 sq ft. Inside, 720.8 sq ft: the living area in the wider block and two bedrooms in the deeper block.' },
+  { key: 'walls', kinds: ['cedar', 'glass', 'wall'], t: 'Walls', n: 'Glass everywhere: every exterior wall is floor-to-ceiling glass in black steel frames. Inside, one partition splits the deeper block into two 16 ft × 12 ft bedrooms, with the frame posts inside it.' },
   { key: 'roofs', kinds: ['roof'], t: 'Roofs', n: 'Left: a 12 in. drainage fall from north to south. Right: a shed roof from 14 ft at the spine down to 10 ft at the east edge.' },
   { key: 'spine', kinds: ['spine'], t: 'The spine', n: 'The twelve red tower columns are clad as one weathering-steel fin, 16.5 ft tall, the full depth of the house.' },
 ];

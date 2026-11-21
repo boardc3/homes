@@ -7,7 +7,7 @@ const P3 = ([x, y, z]) => [x - CX, z, -(y - CY)];
 const TRI = [[0,2,1],[0,3,2],[4,5,6],[4,6,7],[0,1,5],[0,5,4],[1,2,6],[1,6,5],[2,3,7],[2,7,6],[3,0,4],[3,4,7]];
 const MAT = {
   deck: ['#b98a5e', 1], floor: ['#c9c6bf', 1], steel: ['#1b1d20', 1], leg: ['#2a2c30', 1],
-  spine: ['#9c4a26', 1], roof: ['#5b5f63', 1], cedar: ['#6e5038', 1], glass: ['#9fc4d6', .55],
+  spine: ['#9c4a26', 1], roof: ['#5b5f63', 1], cedar: ['#6e5038', 1], glass: ['#9fc4d6', .55], wall: ['#ece7dd', 1],
 };
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });

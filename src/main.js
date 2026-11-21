@@ -16,9 +16,10 @@ initViewer();
 const SHOTS = [
   ['wild-lake', 'From the lake shore', 'Golden hour · north-east', 'wide'],
   ['wild-lake-dusk', 'Evening at the lake', 'Blue hour · same camera', ''],
-  ['wild-patio', 'The covered patio', 'North-west · lake side', ''],
-  ['wild-approach', 'The approach', 'South-west · private side', ''],
-  ['wild-south', 'Across the meadow', 'South · lake beyond', ''],
+  ['wild-bedroom', 'The front bedroom', 'Deeper block · lake side', ''],
+  ['wild-patio', 'Patio and living room', 'North-west · wider block', ''],
+  ['wild-approach', 'The approach', 'South-west · living room glass', ''],
+  ['wild-aerial', 'From above', 'Drone · south · lake beyond', 'wide'],
 ];
 $('gallery').innerHTML = SHOTS.map(([f, t, s, c]) => `<figure class="${c}"><img src="/media/${f}-1280.jpg" srcset="/media/${f}-1280.jpg 1280w, /media/${f}.jpg 2400w" sizes="${c ? '100vw' : '(max-width:900px) 100vw, 50vw'}" alt="Conceptual rendering: ${t.toLowerCase()}" loading="lazy" decoding="async"><figcaption><b>${t}</b><span>${s} · conceptual rendering</span></figcaption></figure>`).join('');
 

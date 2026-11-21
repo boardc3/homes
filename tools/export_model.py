@@ -86,28 +86,28 @@ MARK={}; CAN=0
 FR_BOX=[];FR_SLOPE=[];LEN={'post':0,'rail':0};CNT={'post':0,'rail':0}
 LTOP=DECK+H11
 MARK['start']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# left posts + flat top rails  (3x2 left block = two bedrooms, split at x=147.5;
-# the two interior posts that stood mid-room at (99,99),(196,99) move into the partition at (147.5,99))
-LPOSTS=[(x,y) for x in (2,99,196) for y in (2,196)]+[(2,99),(147.5,99)]
-for x,y in LPOSTS:
-    FR_BOX.append(('p',x-2,y-2,4,4,DECK,LTOP-4-dL(y))); LEN['post']+=LTOP-4-dL(y)-DECK; CNT['post']+=1
-for y,segs in ((2,((2,99),(99,196),(196,293))),(196,((2,99),(99,196),(196,293))),(99,((2,147.5),(147.5,293)))):
-    for xa,xb in segs:
+# left posts + flat top rails
+for x in (2,99,196):
+    for y in (2,99,196):
+        FR_BOX.append(('p',x-2,y-2,4,4,DECK,LTOP-4-dL(y))); LEN['post']+=LTOP-4-dL(y)-DECK; CNT['post']+=1
+for y in (2,99,196):
+    for xa,xb in ((2,99),(99,196),(196,293)):
         FR_BOX.append(('r',xa+2,y-2,xb-xa-4,4,LTOP-4-dL(y),LTOP-dL(y))); LEN['rail']+=xb-xa-4; CNT['rail']+=1
-for x in (2,147.5,293):
+for x in (2,99,196,293):
     for ya,yb_ in ((2,99),(99,196)):
         LEN['rail']+=tiltL(x,ya+2,yb_-2,4,4); CNT['rail']+=1
 MARK['left_end']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# right posts
-for x in (406,503):
-    for y in (2,99,196,293):
-        FR_BOX.append(('p',x-2,y-2,4,4,DECK,rz(x,y)-4)); LEN['post']+=rz(x,y)-4-DECK; CNT['post']+=1
-# right y-rails at roof height of their x
-for x in (309,406,503):
-    for ya,yb_ in ((2,99),(99,196),(196,293)):
+# right posts  (deeper 2x3 block = two bedrooms, 16 ft x 12 ft each, partition at y=147.5;
+# the posts that stood mid-room at (406,99),(406,196) and the east posts at (503,99),(503,196) move onto the partition line)
+RPOSTS=[(x,y) for x in (406,503) for y in (2,147.5,293)]
+for x,y in RPOSTS:
+    FR_BOX.append(('p',x-2,y-2,4,4,DECK,rz(x,y)-4)); LEN['post']+=rz(x,y)-4-DECK; CNT['post']+=1
+# right y-rails at roof height of their x (x=309 sits on the red tower columns at 2/99/196/293)
+for x,segs in ((309,((2,99),(99,196),(196,293))),(406,((2,147.5),(147.5,293))),(503,((2,147.5),(147.5,293)))):
+    for ya,yb_ in segs:
         LEN['rail']+=tilt_y(x,ya+2,yb_-2,4,4); CNT['rail']+=1
-# right sloped x-rails
-for y in (2,99,196,293):
+# right sloped x-rails (perimeter rows + the partition row)
+for y in (2,147.5,293):
     for xa,xb in ((311,404),(408,501)):
         za,zb=roof(xa)-drop(y),roof(xb)-drop(y)
         v=[(xa,y-2,za-4),(xb,y-2,zb-4),(xb,y+2,zb-4),(xa,y+2,za-4),(xa,y-2,za),(xb,y-2,zb),(xb,y+2,zb),(xa,y+2,za)]
@@ -183,8 +183,8 @@ for i,j,bb in cells:
 add('floors','Gray floor and patio',fl,0,0,'Twelve 93 in. x 93 in. gray floor cells make the living area. The three white cells at the north end are the patio.',len(fl))
 tw=[('col',hexa(cx-2,cy-2,4,4,DECK,CT)) for cx,cy in cols]+[('cap',hexa(x,y,w,h,CT,CT+T)) for x,y,w,h in rails+rungs]
 add('tower','Red tower columns',tw,(coltot+captot)/12,0,'Twelve 4 in. x 4 in. columns rise 15 ft above the deck at x = 293 and 309, joined by cap rails and rungs.',len(tw))
-add('left','Bedroom block frame (raked)',seg('start','left_end'),L4('start','left_end'),0,'Frame over the two bedrooms (the 3 x 2 left block): 11 ft above the deck at the patio edge, falling 12 in. to the south. Its one interior post stands in the wall between the bedrooms at x = 147.5 in., so each 12 ft x 16 ft room is clear.',0)
-add('right','Living block frame (sloped)',seg('left_end','right_end'),L4('left_end','right_end'),0,'Frame over the 2 x 3 living area. Its roof slopes from 14 ft above the deck at the tower down to 10 ft at the far east edge.',0)
+add('left','Living block frame (raked)',seg('start','left_end'),L4('start','left_end'),0,'Frame over the living area, the wider 3 x 2 block behind the patio: 11 ft above the deck at the patio edge, falling 12 in. to the south.',0)
+add('right','Bedroom block frame (sloped)',seg('left_end','right_end'),L4('left_end','right_end'),0,'Frame over the two bedrooms, the deeper 2 x 3 block: roof from 14 ft at the tower down to 10 ft at the east edge. Its interior posts stand in the wall between the bedrooms at y = 147.5 in., so each 16 ft x 12 ft room is clear.',0)
 add('canopy_sw','Canopy: west and south joists',seg('can0','can_sw_end'),0,LC('can0','can_sw_end'),'3 in. x 2 in. joists about every 48.5 in. over the west and south perimeter squares, raking with the roof.',0)
 add('canopy_patio','Canopy: patio extension',seg('can_sw_end','can_patio_end'),0,LC('can_sw_end','can_patio_end'),'The canopy continues over the white patio cells and north border, still in 3 in. x 2 in. tube, on the same continuous 1 ft fall.',0)
 add('canopy_right','Canopy: right block',seg('can_patio_end','can_right_end'),0,LC('can_patio_end','can_right_end'),'South, north and east joists over the perimeter squares of the sloped right block.',0)
@@ -271,12 +271,13 @@ def wall(c,x0,x1,y0,y1,top):
     BO.append(dict(c=c,v=r(v)))
 LT=lambda x,y: LTOP-4-dL(y)
 RT=lambda x,y: roof(x)-4
-wall('glass',4,291,195,197,LT)        # left north (to patio) – glass
-wall('cedar',1,3,4,194,LT)            # left west – cedar
-wall('cedar',4,291,1,3,LT)            # left south – cedar
-wall('glass',311,501,292,294,RT)      # right north – glass
-wall('glass',502,504,4,291,RT)        # right east – glass
-wall('cedar',311,501,1,3,RT)          # right south – cedar
-wall('wall',146,149,4,194,LT)         # bedroom partition (holds the moved post at x=147.5)
+# GLASS EVERYWHERE: every exterior wall is floor-to-ceiling glass in black steel frames
+wall('glass',4,291,195,197,LT)        # living north (to patio + lake)
+wall('glass',1,3,4,194,LT)            # living west
+wall('glass',4,291,1,3,LT)            # living south
+wall('glass',311,501,292,294,RT)      # bedrooms north (lake)
+wall('glass',502,504,4,291,RT)        # bedrooms east
+wall('glass',311,501,1,3,RT)          # bedrooms south
+wall('wall',311,501,146,149,RT)       # partition between the two bedrooms (posts at y=147.5 sit inside it)
 json.dump(BO,open('/home/claude/site/data/buildout.json','w'),separators=(',',':'))
 print('buildout items',len(BO))

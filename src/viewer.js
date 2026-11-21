@@ -156,7 +156,7 @@ export function initViewer() {
     document.getElementById('viewer').classList.toggle('is-real', e > .5);
   }
   const NOTE = {
-    real: 'Built out with the concept finishes: ipe deck, charred cedar, floor-to-ceiling glass, Corten spine, standing-seam roofs. Two bedrooms on the left, the living area under the tall roof on the right, the lake to the north beyond the patio.',
+    real: 'Built out with the concept finishes: glass on every wall, ipe deck, Corten spine, standing-seam roofs. The living area is in the wider block behind the patio, two bedrooms in the deeper block under the tall roof, and the lake to the north.',
     beams: `The steel exactly as drawn: <b>${fmt(dims.l4)} ft</b> of 4 in. × 4 in. tube and <b>${fmt(dims.l3)} ft</b> of 3 in. × 2 in. tube on 54 legs.`,
   };
   const setNote = () => { document.getElementById('viewer-note').innerHTML = NOTE[mode]; };

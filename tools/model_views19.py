@@ -84,27 +84,27 @@ def tiltL(x,y1,y2,w,t):
     return math.hypot(y2-y1,z2-z1)
 FR_BOX=[];FR_SLOPE=[];LEN={'post':0,'rail':0};CNT={'post':0,'rail':0}
 LTOP=DECK+H11
-# left posts + flat top rails  (3x2 left block = two bedrooms, split at x=147.5;
-# the two interior posts that stood mid-room at (99,99),(196,99) move into the partition at (147.5,99))
-LPOSTS=[(x,y) for x in (2,99,196) for y in (2,196)]+[(2,99),(147.5,99)]
-for x,y in LPOSTS:
-    FR_BOX.append(('p',x-2,y-2,4,4,DECK,LTOP-4-dL(y))); LEN['post']+=LTOP-4-dL(y)-DECK; CNT['post']+=1
-for y,segs in ((2,((2,99),(99,196),(196,293))),(196,((2,99),(99,196),(196,293))),(99,((2,147.5),(147.5,293)))):
-    for xa,xb in segs:
+# left posts + flat top rails
+for x in (2,99,196):
+    for y in (2,99,196):
+        FR_BOX.append(('p',x-2,y-2,4,4,DECK,LTOP-4-dL(y))); LEN['post']+=LTOP-4-dL(y)-DECK; CNT['post']+=1
+for y in (2,99,196):
+    for xa,xb in ((2,99),(99,196),(196,293)):
         FR_BOX.append(('r',xa+2,y-2,xb-xa-4,4,LTOP-4-dL(y),LTOP-dL(y))); LEN['rail']+=xb-xa-4; CNT['rail']+=1
-for x in (2,147.5,293):
+for x in (2,99,196,293):
     for ya,yb_ in ((2,99),(99,196)):
         LEN['rail']+=tiltL(x,ya+2,yb_-2,4,4); CNT['rail']+=1
-# right posts
-for x in (406,503):
-    for y in (2,99,196,293):
-        FR_BOX.append(('p',x-2,y-2,4,4,DECK,rz(x,y)-4)); LEN['post']+=rz(x,y)-4-DECK; CNT['post']+=1
-# right y-rails at roof height of their x
-for x in (309,406,503):
-    for ya,yb_ in ((2,99),(99,196),(196,293)):
+# right posts  (deeper 2x3 block = two bedrooms, 16 ft x 12 ft each, partition at y=147.5;
+# the posts that stood mid-room at (406,99),(406,196) and the east posts at (503,99),(503,196) move onto the partition line)
+RPOSTS=[(x,y) for x in (406,503) for y in (2,147.5,293)]
+for x,y in RPOSTS:
+    FR_BOX.append(('p',x-2,y-2,4,4,DECK,rz(x,y)-4)); LEN['post']+=rz(x,y)-4-DECK; CNT['post']+=1
+# right y-rails at roof height of their x (x=309 sits on the red tower columns at 2/99/196/293)
+for x,segs in ((309,((2,99),(99,196),(196,293))),(406,((2,147.5),(147.5,293))),(503,((2,147.5),(147.5,293)))):
+    for ya,yb_ in segs:
         LEN['rail']+=tilt_y(x,ya+2,yb_-2,4,4); CNT['rail']+=1
-# right sloped x-rails
-for y in (2,99,196,293):
+# right sloped x-rails (perimeter rows + the partition row)
+for y in (2,147.5,293):
     for xa,xb in ((311,404),(408,501)):
         za,zb=roof(xa)-drop(y),roof(xb)-drop(y)
         v=[(xa,y-2,za-4),(xb,y-2,zb-4),(xb,y+2,zb-4),(xa,y+2,za-4),(xa,y-2,za),(xb,y-2,zb),(xb,y+2,zb),(xa,y+2,za)]

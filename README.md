@@ -15,9 +15,9 @@ One guided scroll story, then the technical set:
 Data: `tools/export_model.py` writes `src/data/model.json`, `buildout.json`, `elev_*.svg`, `plan.svg` from the model script.
 References for the renderings: `refs/` (rendered by `refs.html` + `src/refs.js`).
 
-Layout: two 12 ft x 16 ft bedrooms in the 3 x 2 left block (its interior post moved into the partition at x = 147.5 in.), 16 ft x 24 ft living area in the 2 x 3 right block.
+Layout: living area in the wider 3 x 2 left block (frame as designed, behind the patio); two 16 ft x 12 ft bedrooms in the deeper 2 x 3 right block, split at y = 147.5 in. with the interior and east posts moved onto that line. Glass on every exterior wall.
 
-Key numbers: gray living area 720.8 sq ft · entire platform 1,666.5 sq ft · 4 in. x 4 in. tube 1,366.7 ft · 3 in. x 2 in. tube 217.4 ft.
+Key numbers: gray living area 720.8 sq ft · entire platform 1,666.5 sq ft · 4 in. x 4 in. tube 1,355.2 ft · 3 in. x 2 in. tube 217.4 ft.
 
 ## Ship it
 
