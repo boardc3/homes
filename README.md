@@ -1,12 +1,18 @@
 # Homes — build presentation site
 
-Scroll presentation of the Homes steel-tube platform and frame, from bare ground to the finished build.
-All geometry (src/data/model.json, elev_*.svg, plan.svg) is exported from the model script, in inches.
+Live: https://homes-chris-ccolbertcoms-projects.vercel.app (Vercel project `homes`, deploys on every push to `main`).
 
-- `src/scene.js` three.js scene shared by the hero, the build sequence and the film
-- `film.html` + `src/film.js` deterministic frame-by-frame renderer used to make `public/media/homes-build.mp4`
-- `tools/export_model.py` regenerates `src/data/*` from the model (needs the model script `views19.py`)
-- `tools/rec.py` records the film frames from `npm run dev` (then ffmpeg → mp4)
+One guided scroll story, then the technical set:
+
+1. **Story** (`src/story.js`): a sticky stage driven only by scroll position (no zoom, no orbit). Chapter 1 bare ground with the
+   staked footprint, chapter 2 the 10 frame steps with running tube totals, chapter 3 the enclosure (deck, walls, roofs, Corten
+   spine), chapter 4 a crossfade into the photoreal rendering taken from the exact same camera (`CAM_A` = `refs/A_lake_ne.png`), then dusk.
+2. **Renderings**: five conceptual renderings (nano_banana_pro, each locked to a massing reference rendered from the model).
+3. **Film**: 29 s, 1080p30, rendered frame by frame from the model (`film.html` + `src/film.js`, recorded with `tools/rec.py`).
+4. **Elevations, plan, drainage, numbers**: SVG projections and tables generated from `src/data/model.json`.
+
+Data: `tools/export_model.py` writes `src/data/model.json`, `buildout.json`, `elev_*.svg`, `plan.svg` from the model script.
+References for the renderings: `refs/` (rendered by `refs.html` + `src/refs.js`).
 
 Key numbers: gray living area 720.8 sq ft · entire platform 1,666.5 sq ft · 4 in. x 4 in. tube 1,391.9 ft · 3 in. x 2 in. tube 217.4 ft.
 

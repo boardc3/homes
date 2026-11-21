@@ -2,67 +2,72 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Homes — from bare ground to the full steel frame</title>
-<meta name="description" content="An exact, step-by-step build presentation of the Homes steel-tube platform and building frame, generated directly from the model geometry.">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Homes — from bare ground to a place in the wild</title>
+<meta name="description" content="A steel-tube house, built up from bare ground through its frame and enclosure to a finished home by a mountain lake. Every member drawn from the model, in inches.">
+<meta property="og:image" content="/media/wild-lake-1280.jpg">
+<link rel="preload" as="image" href="/media/wild-lake.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314171a'/%3E%3Cpath d='M6 24V12l10-6 10 6v12' fill='none' stroke='%23e0a030' stroke-width='2.5'/%3E%3C/svg%3E">
 <script type="module" src="/src/main.js"></script>
 </head>
 <body>
 <header class="top">
-  <a class="brand" href="#top"><span class="mark"></span>Homes</a>
-  <nav><a href="#film">Film</a><a href="#build">Build</a><a href="#elevations">Elevations</a><a href="#plan">Plan</a><a href="#rake">Drainage</a><a href="#numbers">Numbers</a></nav>
+  <a class="brand" href="#story"><span class="mark"></span>Homes</a>
+  <nav><a href="#story">Story</a><a href="#renderings">Renderings</a><a href="#film">Film</a><a href="#elevations">Elevations</a><a href="#plan">Plan</a><a href="#rake">Drainage</a><a href="#numbers">Numbers</a></nav>
 </header>
 
-<section id="top" class="hero">
-  <canvas id="hero-canvas" aria-label="Interactive 3D model of the finished frame"></canvas>
-  <div class="hero-copy">
-    <p class="eyebrow">Steel tube platform and building frame</p>
-    <h1>From bare ground<br>to the full build.</h1>
-    <p class="lede">Every member below is drawn from the model itself, in inches. Scroll to watch it go up, one assembly at a time.</p>
-    <dl class="hero-figs" id="hero-figs"></dl>
-    <a class="cta" href="#build">Start the build <span>↓</span></a>
+<section id="story" aria-label="Build story: from bare ground to a place in the wild">
+  <div class="sticky">
+    <div id="stage-box">
+      <canvas id="story-canvas" aria-hidden="true"></canvas>
+      <img id="real-day" class="real" src="/media/wild-lake.jpg" alt="Conceptual rendering: the finished house beside a mountain lake at golden hour" decoding="async">
+      <img id="real-dusk" class="real" src="/media/wild-lake-dusk.jpg" alt="Conceptual rendering: the same view at blue hour, interior lit" decoding="async" loading="lazy">
+    </div>
+    <div id="intro">
+      <p class="eyebrow">Homes · steel tube house</p>
+      <h1>From bare ground<br>to a place in the wild.</h1>
+      <p class="lede">Scroll to build it: footings, frame, walls and roof, then the finished house by the lake. Every member comes from the model, in inches.</p>
+    </div>
+    <div id="cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+    <aside id="cap" class="in" aria-live="polite">
+      <p class="k" id="cap-k"></p><h2 id="cap-t"></h2><p class="n" id="cap-n"></p><div class="c" id="cap-c"></div>
+    </aside>
+    <nav id="rail" aria-label="Chapters">
+      <button><b>1</b><span>Ground</span></button>
+      <button><b>2</b><span>Frame</span></button>
+      <button><b>3</b><span>Enclosure</span></button>
+      <button><b>4</b><span>In the wild</span></button>
+    </nav>
+    <div id="counters">
+      <div><b id="k4">0.0</b><span>ft 4 in. × 4 in. tube</span></div>
+      <div><b id="k3">0.0</b><span>ft 3 in. × 2 in. tube</span></div>
+      <div><b id="ka">0.0</b><span>sq ft living area</span></div>
+    </div>
+    <div class="progress"><i id="bar"></i></div>
   </div>
-  <p class="hint">Drag to orbit · scroll to zoom</p>
+</section>
+
+<section id="renderings" class="block dark">
+  <div class="block-head">
+    <p class="eyebrow">Renderings</p>
+    <h2>Finished, by the lake.</h2>
+    <p>Conceptual renderings. Each one was made from a camera placed in the exact model, so the roofs, posts, spine and deck match the drawings.</p>
+  </div>
+  <div class="gallery" id="gallery"></div>
 </section>
 
 <section id="film" class="film-sec">
   <p class="eyebrow">The build in 29 seconds</p>
-  <h2>Nothing to finished.</h2>
-  <p class="s">Every frame is rendered from the same model geometry as the rest of this page: footings, platform, floor, tower, both frames, the canopy and the north edge, in build order.</p>
-  <div class="film-box"><video id="film-video" src="/media/homes-build.mp4" poster="/media/homes-build.jpg" muted loop playsinline autoplay controls preload="metadata"></video></div>
-</section>
-
-<section id="build" class="build">
-  <div class="stage-sticky">
-    <canvas id="build-canvas" aria-label="Interactive 3D build sequence"></canvas>
-    <div class="hud">
-      <div class="hud-top">
-        <div class="step-label"><span id="hud-num">0</span><small>/ <span id="hud-total"></span></small></div>
-        <div class="views" id="views">
-          <button data-v="iso" class="on">Iso</button><button data-v="south">South</button><button data-v="east">East</button><button data-v="plan">Plan</button>
-        </div>
-      </div>
-      <div class="hud-bottom">
-        <div class="counter"><b id="c4">0</b><span>ft of 4 in. × 4 in. tube</span></div>
-        <div class="counter"><b id="c3">0</b><span>ft of 3 in. × 2 in. tube</span></div>
-        <div class="transport">
-          <button id="prev" aria-label="Previous step">◀</button>
-          <button id="play" aria-label="Play build">▶ Play</button>
-          <button id="next" aria-label="Next step">▶</button>
-        </div>
-        <input id="scrub" type="range" min="0" value="0" step="1" aria-label="Build step">
-      </div>
-    </div>
-  </div>
-  <ol class="steps" id="steps"></ol>
+  <h2>Nothing to finished frame.</h2>
+  <p class="s">Rendered frame by frame from the model geometry: footings, platform, floor, tower, both frames, the canopy and the north edge, in build order, with running tube totals.</p>
+  <div class="film-box"><video id="film-video" src="/media/homes-build.mp4" poster="/media/homes-build.jpg" muted loop playsinline controls preload="metadata"></video></div>
 </section>
 
 <section id="elevations" class="block">
   <div class="block-head">
     <p class="eyebrow">Elevations</p>
     <h2>Four sides, straight on.</h2>
-    <p>Orthographic projections of the same geometry. Roof and canopy follow the raked left block and the sloped right block exactly.</p>
+    <p>Orthographic projections of the frame. The left block's roof and canopy fall a continuous 12 in. from north to south, and the right block slopes from the tower to its east edge.</p>
   </div>
   <div class="elev-grid" id="elev-grid"></div>
 </section>
@@ -71,17 +76,18 @@
   <div class="block-head">
     <p class="eyebrow">Plan</p>
     <h2>Fifteen squares, one ring.</h2>
-    <p>The platform is 606 in. × 396 in. overall (50 ft 6 in. × 33 ft). Gray cells are the living area; the three dashed white cells are the patio.</p>
+    <p>The platform is 606 in. × 396 in. overall (50 ft 6 in. × 33 ft). Gray cells are the living area. The three dashed white cells are the patio.</p>
   </div>
   <div class="plan-wrap">
     <div class="plan" id="plan-svg"></div>
     <ul class="legend">
-      <li><i style="background:#3a3d43"></i>Platform tube, 4 in. × 4 in.</li>
+      <li><i style="background:#3a3d43"></i>Platform tube, 4 in. × 4 in., 97 in. pitch</li>
       <li><i style="background:#e0a030"></i>Bridge tube across the 12 in. gap</li>
       <li><i style="background:#9e9e9e"></i>Gray living floor, 12 cells of 93 in. × 93 in.</li>
       <li><i class="dash"></i>White patio, 3 cells</li>
-      <li><i style="background:#c0392b"></i>Red tower columns, 12</li>
+      <li><i style="background:#c0392b"></i>Red tower columns, 12, 15 ft above the deck</li>
       <li><i style="background:#1f6f8b"></i>Teal frame posts and canopy uprights</li>
+      <li><i style="background:#0a5fb4"></i>54 legs, 10 in. tall, on 10 in. × 10 in. plates</li>
     </ul>
   </div>
 </section>
@@ -89,17 +95,17 @@
 <section id="rake" class="block">
   <div class="block-head">
     <p class="eyebrow">Drainage</p>
-    <h2>Two slopes, each doing one job.</h2>
+    <h2>Two slopes, each with one job.</h2>
   </div>
   <div class="rake-grid">
     <article>
-      <h3>Left block: 1 ft fall, north to south</h3>
-      <p>The roof frame and canopy hold 11 ft above the deck at the patio edge and fall a continuous 12 in. toward the south end, so water runs away from the patio. It is one unbroken slope across the frame, the patio extension and the south joists.</p>
+      <h3>Left block: 12 in. fall, north to south</h3>
+      <p>The roof frame and canopy start 11 ft above the deck at the north (patio) edge and fall a continuous 12 in. to the south end, so water runs away from the patio. One unbroken slope covers the frame, the patio extension and the south joists.</p>
       <div class="svgbox" id="rake-w"></div>
     </article>
     <article>
       <h3>Right block: 4 ft fall, tower to east edge</h3>
-      <p>The 2 × 3 block roof starts 14 ft above the deck at the tower and slopes to 10 ft at the far east edge. It has no north–south fall; it already drains east.</p>
+      <p>The 2 × 3 block roof starts 14 ft above the deck at the tower and slopes to 10 ft at the far east edge. It has no north–south fall because it already drains east.</p>
       <div class="svgbox" id="rake-s"></div>
     </article>
   </div>
@@ -112,11 +118,9 @@
   </div>
   <div class="big-figs" id="big-figs"></div>
   <div class="table-wrap"><table id="stage-table"></table></div>
-  <p class="foot">All lengths are tube run, computed from the model geometry. Areas use the 93 in. gray cells (living area) and the 606 in. × 396 in. outer footprint including the border ring.</p>
+  <p class="foot">Lengths are total tube run computed from the model geometry. Areas use the 93 in. gray cells (living area) and the 606 in. × 396 in. outer footprint including the border ring. Enclosure finishes (ipe, charred cedar, glass, Corten) are a design concept for the renderings.</p>
 </section>
 
-<footer>
-  <p>Homes · conceptual model presentation · Sceneset AI</p>
-</footer>
+<footer><p>Homes · conceptual model presentation · renderings are conceptual · Sceneset AI</p></footer>
 </body>
 </html>

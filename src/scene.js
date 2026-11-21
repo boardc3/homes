@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import model from './data/model.json';
 export const { stages, dims } = model;
 export const N = stages.length;                       // 0 = bare ground … N-1 = finished
@@ -33,81 +32,12 @@ export function buildModel() {
       g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), lmat));
       g.visible = false;
       root.add(g);
-      return { g, mat, lmat, a: 0, target: 0, start: 0, flat: it.c === 'floor' || it.c === 'patio' };
+      return { g, mat, lmat, base: new THREE.Color(color), a: 0, target: 0, start: 0, flat: it.c === 'floor' || it.c === 'patio', kind: it.c };
     });
     return { st, items };
   });
   return { root, per };
 }
 
-export function makeStage(canvas, { hero = false } = {}) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  const scene = new THREE.Scene();
-  const cam = new THREE.PerspectiveCamera(28, 1, 10, 9000);
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xb8b2a2, 1.05));
-  const sun = new THREE.DirectionalLight(0xffffff, 1.25); sun.position.set(-500, 900, 700); scene.add(sun);
-  const fill = new THREE.DirectionalLight(0xffffff, .35); fill.position.set(600, 300, -400); scene.add(fill);
-  const grid = new THREE.GridHelper(2400, 20, 0xb4af9f, 0xd7d2c4); grid.position.y = -.8; scene.add(grid);
-  const m = buildModel(); scene.add(m.root);
-  const controls = new OrbitControls(cam, canvas);
-  controls.enableDamping = true; controls.dampingFactor = .08; controls.maxPolarAngle = Math.PI / 2 - .01; controls.minDistance = 300; controls.maxDistance = 3600;
-  controls.target.set(0, 70, 0);
-  const VIEWS = {
-    iso: [1060, 820, 1180, 0, 70, 0],
-    south: [0, 150, 2300, 0, 110, 0],
-    east: [2300, 150, 0, 0, 110, 0],
-    plan: [0, 2200, 1, 0, 0, 0],
-  };
-  let tween = null;
-  function setView(k) {
-    const v = VIEWS[k]; if (!v) return;
-    tween = { t0: performance.now(), dur: 900, p0: cam.position.clone(), t0v: controls.target.clone(), p1: new THREE.Vector3(v[0], v[1], v[2]), t1: new THREE.Vector3(v[3], v[4], v[5]) };
-  }
-  cam.position.set(...VIEWS.iso.slice(0, 3));
-  let stage = 0;
-  function setStage(s, now = performance.now() / 1000) {
-    stage = s;
-    m.per.forEach((p, si) => p.items.forEach((it, k) => {
-      const on = si <= s;
-      if (on && it.target === 0) { it.start = now + (hero ? 0 : k * .014); }
-      it.target = on ? 1 : 0;
-      const hi = !hero && si === s && si > 0;
-      it.mat.emissive.set(hi ? 0x7a8a96 : 0x000000); it.mat.emissiveIntensity = hi ? .30 : 0;
-    }));
-  }
-  if (hero) { m.per.forEach(p => p.items.forEach(it => { it.a = 1; it.target = 1; })); controls.autoRotate = true; controls.autoRotateSpeed = .55; }
-  let last = performance.now() / 1000;
-  function size() {
-    const w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
-    renderer.setSize(w, h, false); cam.aspect = w / h;
-    cam.fov = w / h < .9 ? 40 : 28;
-    if (hero && w > 900) cam.setViewOffset(w, h, -w * .2, h * .04, w, h); else cam.clearViewOffset();
-    cam.updateProjectionMatrix();
-  }
-  new ResizeObserver(size).observe(canvas); size();
-  controls.addEventListener('start', () => { controls.autoRotate = false; tween = null; });
-  let visible = true;
-  new IntersectionObserver(e => { visible = e[0].isIntersecting; }, { rootMargin: '200px' }).observe(canvas);
-  function frame() {
-    requestAnimationFrame(frame);
-    if (!visible) return;
-    const now = performance.now() / 1000, dt = Math.min(now - last, .05); last = now;
-    for (const p of m.per) for (const it of p.items) {
-      if (it.target === 1) { if (now >= it.start) it.a = Math.min(1, it.a + dt / .55); }
-      else it.a = Math.max(0, it.a - dt / .22);
-      const e = 1 - Math.pow(1 - it.a, 3);
-      it.g.visible = it.a > .004;
-      if (it.g.visible) { it.mat.opacity = e; it.lmat.opacity = e * .9; it.g.position.y = it.flat ? 0 : (1 - e) * 70; }
-    }
-    if (tween) {
-      let k = Math.min(1, (performance.now() - tween.t0) / tween.dur); k = k * k * (3 - 2 * k);
-      cam.position.lerpVectors(tween.p0, tween.p1, k); controls.target.lerpVectors(tween.t0v, tween.t1, k);
-      if (k >= 1) tween = null;
-    }
-    controls.update(); renderer.render(scene, cam);
-  }
-  frame();
-  return { setStage, setView, get stage() { return stage; } };
-}
 
+export { P3, hexGeo };

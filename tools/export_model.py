@@ -239,3 +239,42 @@ for k,x,y,w,h,z0,z1 in FR_BOX:
     if k=='p' or (w==4 and h==4): pl.append(f'<rect x="{x}" y="{Y(y+h):.1f}" width="{w}" height="{h}" fill="#1f6f8b" stroke="#0d3a4a" stroke-width="0.6"/>')
 open('/home/claude/site/data/plan.svg','w').write('\n'.join(pl+['</svg>']))
 print('svgs written')
+
+# ---------- BUILT-OUT massing (for photoreal references) — same geometry, closed in
+BO=[]
+def bx(c,x0,x1,y0,y1,z0,z1): BO.append(dict(c=c,v=r(hexa(x0,y0,x1-x0,y1-y0,z0,z1))))
+def quad_slab(c,x0,x1,y0,y1,ztop,th):   # slab whose top follows ztop(x,y) at the 4 corners
+    pts=[(x0,y0),(x1,y0),(x1,y1),(x0,y1)]
+    v=[(x,y,ztop(x,y)-th) for x,y in pts]+[(x,y,ztop(x,y)) for x,y in pts]
+    BO.append(dict(c=c,v=r(v)))
+OX0,OX1,OY0,OY1=xl0-2,xr1+2,yb-2,yt+2
+# deck (wood) over the whole platform, interior floors (concrete) inside the closed volumes
+bx('deck',OX0,OX1,OY0,OY1,DECK-0.2,DECK+1.0)
+bx('floor',2,293,2,196,DECK+1.0,DECK+1.3); bx('floor',309,503,2,293,DECK+1.0,DECK+1.3)
+# platform tube fascia + legs/plates
+for k,x,y,w,h in pieces: BO.append(dict(c='steel',v=r(hexa(x,y,w,h,F,F+T))))
+for cx,cy in nodes: BO.append(dict(c='leg',v=r(hexa(cx-2,cy-2,4,4,0,F))))
+# steel frame, tower, edge (everything from the model)
+for k,x,y,w,h,z0,z1 in FR_BOX: BO.append(dict(c='steel',v=r(hexa(x,y,w,h,z0,z1))))
+for vs in FR_SLOPE: BO.append(dict(c='steel',v=r(list(vs))))
+# spine: the red tower, clad as a weathering-steel fin between the two blocks
+bx('spine',291,311,OY0,OY1,DECK+1,CT+T)
+# LEFT roof: one slab over frame + canopy, top flush with joist tops, 1 ft fall N->S
+quad_slab('roof',OX0,291,OY0,OY1,lambda x,y: LTOP-dL(min(max(y,yb-2),yt+2))+5,9)
+# RIGHT roof: sloped 14 ft at tower -> 10 ft at east edge
+quad_slab('roof',311,OX1,OY0,OY1,lambda x,y: roof(x)+5,9)
+# walls (inset 1 in. inside the post line). left block: N glass, W cedar, S cedar ; right: N glass, E glass, S cedar
+def wall(c,x0,x1,y0,y1,top):
+    zt0,zt1=top(x0,y0),top(x1,y1); z0=DECK+1.3
+    v=[(x0,y0,z0),(x1,y0,z0),(x1,y1,z0),(x0,y1,z0),(x0,y0,zt0),(x1,y0,zt1),(x1,y1,zt1),(x0,y1,zt0)]
+    BO.append(dict(c=c,v=r(v)))
+LT=lambda x,y: LTOP-4-dL(y)
+RT=lambda x,y: roof(x)-4
+wall('glass',4,291,195,197,LT)        # left north (to patio) – glass
+wall('cedar',1,3,4,194,LT)            # left west – cedar
+wall('cedar',4,291,1,3,LT)            # left south – cedar
+wall('glass',311,501,292,294,RT)      # right north – glass
+wall('glass',502,504,4,291,RT)        # right east – glass
+wall('cedar',311,501,1,3,RT)          # right south – cedar
+json.dump(BO,open('/home/claude/site/data/buildout.json','w'),separators=(',',':'))
+print('buildout items',len(BO))
