@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Homes — from bare ground to a place in the wild</title>
 <meta name="description" content="A steel-tube house, built up from bare ground through its frame and enclosure to a finished home by a mountain lake. Every member drawn from the model, in inches.">
-<meta property="og:image" content="/media/wild-lake-1280.jpg">
-<link rel="preload" as="image" href="/media/wild-lake.jpg">
+<meta property="og:image" content="/media/laguna-hero-1280.jpg">
+<link rel="preload" as="image" href="/media/laguna-hero.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314171a'/%3E%3Cpath d='M6 24V12l10-6 10 6v12' fill='none' stroke='%23e0a030' stroke-width='2.5'/%3E%3C/svg%3E">
 <script type="module" src="/src/main.js"></script>
 </head>
@@ -20,13 +20,15 @@
   <div class="sticky">
     <div id="stage-box">
       <canvas id="story-canvas" aria-hidden="true"></canvas>
-      <img id="real-day" class="real" src="/media/wild-lake.jpg" alt="Conceptual rendering: the finished house beside a mountain lake at golden hour" decoding="async">
-      <img id="real-dusk" class="real" src="/media/wild-lake-dusk.jpg" alt="Conceptual rendering: the same view at blue hour, interior lit" decoding="async" loading="lazy">
+      <img id="laguna-day" class="real" src="/media/laguna-hero.jpg" alt="Conceptual rendering: the finished house on a hillside above Laguna Beach, Pacific Ocean beyond" decoding="async">
+      <img id="laguna-dusk" class="real" src="/media/laguna-hero-dusk.jpg" alt="Conceptual rendering: the same view at sunset over the Pacific, interior lit" decoding="async" loading="lazy">
+      <img id="lake-day" class="real" src="/media/wild-lake.jpg" alt="Conceptual rendering: the finished house beside a mountain lake at golden hour" decoding="async" loading="lazy">
+      <img id="lake-dusk" class="real" src="/media/wild-lake-dusk.jpg" alt="Conceptual rendering: the same view at blue hour, interior lit" decoding="async" loading="lazy">
     </div>
     <div id="intro">
       <p class="eyebrow">Homes · steel tube house</p>
-      <h1>From bare ground<br>to a place in the wild.</h1>
-      <p class="lede">Scroll to build it: footings, frame, walls and roof, then the finished house by the lake. Every member comes from the model, in inches.</p>
+      <h1>From bare ground<br>to a real place.</h1>
+      <p class="lede">Scroll to build it: footings, frame, walls and roof, then the finished house in Laguna Beach or by a mountain lake. Every member comes from the model, in inches.</p>
     </div>
     <div id="cue" aria-hidden="true"><span>Scroll</span><i></i></div>
     <aside id="cap" class="in" aria-live="polite">
@@ -36,8 +38,11 @@
       <button><b>1</b><span>Ground</span></button>
       <button><b>2</b><span>Frame</span></button>
       <button><b>3</b><span>Enclosure</span></button>
-      <button><b>4</b><span>In the wild</span></button>
+      <button><b>4</b><span>A real place</span></button>
     </nav>
+    <div class="seg place" id="place" role="group" aria-label="Setting">
+      <button data-place="laguna" aria-pressed="true">Laguna Beach</button><button data-place="lake" aria-pressed="false">Mountain lake</button>
+    </div>
     <div id="counters">
       <div><b id="k4">0.0</b><span>ft 4 in. × 4 in. tube</span></div>
       <div><b id="k3">0.0</b><span>ft 3 in. × 2 in. tube</span></div>
@@ -50,8 +55,11 @@
 <section id="renderings" class="block dark">
   <div class="block-head">
     <p class="eyebrow">Renderings</p>
-    <h2>Finished, by the lake.</h2>
-    <p>Conceptual renderings, glass on every wall. Each one was made from a camera placed in the exact model, so the roofs, posts, spine and deck match the drawings. Bedrooms in the deeper block, living area in the wider block behind the patio.</p>
+    <h2>Finished, in two places.</h2>
+    <p>Conceptual renderings with glass on every wall: bedrooms in the deeper block, the living area in the wider block behind the patio. Each was made from a camera placed in the exact model, so the roofs, posts, spine and deck match the drawings.</p>
+    <div class="seg gal-tabs" id="gal-tabs" role="tablist" aria-label="Setting">
+      <button data-set="laguna" aria-pressed="true" role="tab">Laguna Beach</button><button data-set="lake" aria-pressed="false" role="tab">Mountain lake</button>
+    </div>
   </div>
   <div class="gallery" id="gallery"></div>
 </section>

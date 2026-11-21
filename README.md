@@ -7,7 +7,7 @@ One guided scroll story, then the technical set:
 1. **Story** (`src/story.js`): a sticky stage driven only by scroll position (no zoom, no orbit). Chapter 1 bare ground with the
    staked footprint, chapter 2 the 10 frame steps with running tube totals, chapter 3 the enclosure (deck, walls, roofs, Corten
    spine), chapter 4 a crossfade into the photoreal rendering taken from the exact same camera (`CAM_A` = `refs/A_lake_ne.png`), then dusk.
-2. **Renderings**: five conceptual renderings (nano_banana_pro, each locked to a massing reference rendered from the model).
+2. **Renderings**: two settings (Laguna Beach default, mountain lake) with a switch; the story's closing shot has the same switch. Conceptual renderings (nano_banana_pro, each locked to a massing reference rendered from the model).
 3. **Film**: 29 s, 1080p30, rendered frame by frame from the model (`film.html` + `src/film.js`, recorded with `tools/rec.py`).
 4. **3D model** (`src/viewer.js`): Beams / Realistic switch (crossfade), drag to turn, preset views, no zoom.
 5. **Elevations, plan, drainage, numbers**: SVG projections and tables generated from `src/data/model.json`.

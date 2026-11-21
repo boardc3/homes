@@ -46,7 +46,14 @@ export function initStory() {
   const sec = document.getElementById('story');
   const box = document.getElementById('stage-box');
   const canvas = document.getElementById('story-canvas');
-  const real = document.getElementById('real-day'), dusk = document.getElementById('real-dusk');
+  const PLACES = { laguna: ['laguna-day', 'laguna-dusk'], lake: ['lake-day', 'lake-dusk'] };
+  let place = 'laguna';
+  const imgs = Object.fromEntries(Object.entries(PLACES).map(([k, [d, n]]) => [k, [document.getElementById(d), document.getElementById(n)]]));
+  const placeSeg = document.getElementById('place');
+  placeSeg.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button'); if (!b) return; place = b.dataset.place;
+    [...placeSeg.children].forEach((x) => x.setAttribute('aria-pressed', x === b)); lastKey = ''; dirty = true;
+  });
   const $ = (id) => document.getElementById(id);
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -116,12 +123,13 @@ export function initStory() {
       const e = Math.min(ENC.length - 1, Math.floor((p - P_FRAME1) / ENC_SPAN));
       kick = `Chapter 3 · Enclosure · ${e + 1} of ${ENC.length}`; title = ENC[e].t; note = ENC[e].n; chips.push('Concept finishes');
     } else {
-      const d = p >= P_DUSK0;
-      kick = 'Chapter 4 · In the wild'; title = d ? 'Evening at the lake' : 'A place in the wild';
-      note = 'Conceptual rendering made from this exact camera and the model’s exact geometry: same roofs, posts, spine and deck.';
-      chips.push(d ? 'Blue hour' : 'Golden hour');
+      const d = p >= P_DUSK0, L = place === 'laguna';
+      kick = 'Chapter 4 · A real place';
+      title = L ? (d ? 'Sunset over the Pacific' : 'Laguna Beach') : (d ? 'Evening at the lake' : 'A place in the wild');
+      note = (L ? 'On a coastal hillside above Laguna Beach, Catalina on the horizon. ' : 'Beside a mountain lake. ') + 'Conceptual rendering made from this exact camera and the model\u2019s exact geometry: same roofs, posts, spine and deck.';
+      chips.push(d ? (L ? 'Sunset' : 'Blue hour') : 'Golden hour', 'Switch the setting above');
     }
-    const key = kick + title;
+    const key = kick + title + place;
     if (key === lastKey) return; lastKey = key;
     $('cap-k').textContent = kick; $('cap-t').textContent = title; $('cap-n').textContent = note;
     $('cap-c').innerHTML = chips.map((c) => `<span>${c}</span>`).join('');
@@ -169,8 +177,9 @@ export function initStory() {
     if (cam.fov !== c.fov) { cam.fov = c.fov; cam.updateProjectionMatrix(); }
     renderer.render(scene, cam);
     // photoreal
-    real.style.opacity = smooth((p - P_REAL0) / (P_REAL1 - P_REAL0));
-    dusk.style.opacity = smooth((p - P_DUSK0) / (P_DUSK1 - P_DUSK0));
+    const rk = smooth((p - P_REAL0) / (P_REAL1 - P_REAL0)), dk = smooth((p - P_DUSK0) / (P_DUSK1 - P_DUSK0));
+    for (const [k, [d, n]] of Object.entries(imgs)) { d.style.opacity = k === place ? rk : 0; n.style.opacity = k === place ? dk : 0; }
+    placeSeg.classList.toggle('show', p > P_REAL0 + .02);
     // counters
     let c4 = 0, c3 = 0;
     for (let i = 1; i < N; i++) {
@@ -184,7 +193,6 @@ export function initStory() {
     if (document.documentElement.classList.contains('tall')) $('cap').style.opacity = smooth((p - .03) / .02); else $('cap').style.opacity = '';
     $('cue').style.opacity = 1 - smooth(p / .02);
     $('bar').style.transform = `scaleX(${p})`;
-    document.documentElement.style.setProperty('--real', real.style.opacity);
     caption(p);
   }
 

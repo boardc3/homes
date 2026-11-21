@@ -141,3 +141,13 @@ footer{padding:36px clamp(16px,4vw,48px);font-family:var(--mono);font-size:12px;
 .v-hint{position:absolute;right:18px;bottom:20px;margin:0;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 #viewer.is-real .v-hint{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.5)}
 @media (max-width:700px){#viewer{aspect-ratio:4/5}.views button{padding:8px 9px}.v-hint{display:none}}
+
+/* setting switches */
+.place{position:absolute;left:50%;top:76px;transform:translateX(-50%);opacity:0;pointer-events:none;transition:opacity .4s}
+.place.show{opacity:1;pointer-events:auto}
+html.tall .place{top:68px;left:50%;transform:translateX(-50%)}
+html.tall .place button{padding:8px 12px;font-size:11px}
+.gal-tabs{display:inline-flex;margin-top:26px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)}
+.gal-tabs button{color:#c9c5b8}
+.gal-tabs button[aria-pressed=true]{background:#f1eee6;color:#14171a}
+.real{transition:opacity .5s ease}

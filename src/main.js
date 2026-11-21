@@ -13,15 +13,31 @@ initStory();
 initViewer();
 
 /* renderings */
-const SHOTS = [
-  ['wild-lake', 'From the lake shore', 'Golden hour · north-east', 'wide'],
-  ['wild-lake-dusk', 'Evening at the lake', 'Blue hour · same camera', ''],
-  ['wild-bedroom', 'The front bedroom', 'Deeper block · lake side', ''],
-  ['wild-patio', 'Patio and living room', 'North-west · wider block', ''],
-  ['wild-approach', 'The approach', 'South-west · living room glass', ''],
-  ['wild-aerial', 'From above', 'Drone · south · lake beyond', 'wide'],
-];
-$('gallery').innerHTML = SHOTS.map(([f, t, s, c]) => `<figure class="${c}"><img src="/media/${f}-1280.jpg" srcset="/media/${f}-1280.jpg 1280w, /media/${f}.jpg 2400w" sizes="${c ? '100vw' : '(max-width:900px) 100vw, 50vw'}" alt="Conceptual rendering: ${t.toLowerCase()}" loading="lazy" decoding="async"><figcaption><b>${t}</b><span>${s} · conceptual rendering</span></figcaption></figure>`).join('');
+const SETS = {
+  laguna: [
+    ['laguna-hero', 'Above Laguna Beach', 'Golden hour · Pacific beyond', 'wide'],
+    ['laguna-hero-dusk', 'Sunset over the Pacific', 'Same camera · interior lit', ''],
+    ['laguna-patio', 'Patio, living room and the coast', 'North-west · Catalina on the horizon', ''],
+    ['laguna-approach', 'The approach', 'South-west · canyon hills', ''],
+    ['laguna-aerial', 'From above', 'Drone · the Laguna coastline', ''],
+  ],
+  lake: [
+    ['wild-lake', 'From the lake shore', 'Golden hour · north-east', 'wide'],
+    ['wild-lake-dusk', 'Evening at the lake', 'Blue hour · same camera', ''],
+    ['wild-bedroom', 'The front bedroom', 'Deeper block · lake side', ''],
+    ['wild-patio', 'Patio and living room', 'North-west · wider block', ''],
+    ['wild-approach', 'The approach', 'South-west · living room glass', ''],
+    ['wild-aerial', 'From above', 'Drone · south · lake beyond', 'wide'],
+  ],
+};
+function gallery(set) {
+  $('gallery').innerHTML = SETS[set].map(([f, t, s, c]) => `<figure class="${c}"><img src="/media/${f}-1280.jpg" srcset="/media/${f}-1280.jpg 1280w, /media/${f}.jpg 2400w" sizes="${c ? '100vw' : '(max-width:900px) 100vw, 50vw'}" alt="Conceptual rendering: ${t.toLowerCase()}" loading="lazy" decoding="async"><figcaption><b>${t}</b><span>${s} · conceptual rendering</span></figcaption></figure>`).join('');
+}
+gallery('laguna');
+$('gal-tabs').addEventListener('click', (ev) => {
+  const b = ev.target.closest('button'); if (!b) return;
+  [...$('gal-tabs').children].forEach((x) => x.setAttribute('aria-pressed', x === b)); gallery(b.dataset.set);
+});
 
 /* film plays only while on screen */
 const vid = $('film-video');
