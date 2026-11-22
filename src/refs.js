@@ -26,7 +26,7 @@ for (const it of bo) {
   const e = new THREE.LineSegments(new THREE.EdgesGeometry(g, 25), new THREE.LineBasicMaterial({ color: 0x111111, transparent: true, opacity: it.c === 'glass' ? .35 : .8 }));
   scene.add(e);
 }
-const cam = new THREE.PerspectiveCamera(30, 16 / 9, 10, 20000);
+const cam = new THREE.PerspectiveCamera(30, 16 / 9, 2, 20000);
 // eye height 66 in. ; positions in model inches relative to centre (x east, y north)
 window.__shot = (w, h, ex, ny, ez, tx, ty, tz, fov) => {
   renderer.setSize(w, h, false); cam.aspect = w / h; cam.fov = fov; cam.updateProjectionMatrix();

@@ -1,5 +1,5 @@
-:root{--paper:#f3f0e8;--paper2:#e9e5da;--ink:#14171a;--mute:#5d6166;--amber:#e0a030;--teal:#1f6f8b;--line:#cfcabd;--real:0;
---serif:ui-serif,"Iowan Old Style","Palatino Linotype",Georgia,serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--sans:ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;--bh:100svh}
+:root{--paper:#f3f0e8;--paper2:#e9e5da;--ink:#14171a;--mute:#5d6166;--amber:#e0a030;--teal:#9c4a26;--corten:#9c4a26;--pacific:#1f5f73;--sage:#7f8c6e;--sand:#d9cbb0;--line:#cfcabd;--real:0;
+--serif:"Fraunces",ui-serif,Georgia,serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--sans:ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;--bh:100svh}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
 a{color:inherit}img{max-width:100%;height:auto}
@@ -10,13 +10,13 @@ h2{font-size:clamp(32px,4.4vw,58px);letter-spacing:-.015em}h3{font-size:22px;lin
 /* header */
 .top{position:fixed;inset:0 0 auto 0;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:12px clamp(16px,3.4vw,44px);
   background:rgba(243,240,232,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(20,23,26,.06)}
-.brand{font-family:var(--serif);font-size:21px;text-decoration:none;display:flex;align-items:center;gap:10px;font-weight:600}
+.brand{display:flex;align-items:center;text-decoration:none}.brand .logo{height:30px;width:auto;display:block}
 .mark{width:16px;height:16px;border:2.5px solid var(--ink);border-bottom-color:var(--amber);border-radius:3px;display:inline-block;transform:rotate(45deg) scale(.8)}
 .top nav{display:flex;gap:clamp(12px,2vw,26px);font-size:12.5px;letter-spacing:.05em;text-transform:uppercase}
 .top nav a{text-decoration:none;color:var(--mute)}.top nav a:hover{color:var(--ink)}
 
 /* story */
-#story{position:relative;height:1150vh;background:var(--paper)}
+#story{position:relative;height:640vh;background:var(--paper)}
 .sticky{position:sticky;top:0;height:100svh;overflow:hidden;background:radial-gradient(1100px 700px at 55% 45%,#faf8f2,var(--paper))}
 #stage-box{position:absolute;left:0;top:0;overflow:hidden}
 #story-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
@@ -66,7 +66,7 @@ html.tall #rail{top:calc(58px + var(--bh) - 44px);right:8px;transform:none;flex-
 html.tall #rail span{display:none}
 html.tall #cue{bottom:auto;top:calc(58px + var(--bh) - 70px)}
 html.tall .top nav{display:none}
-html.tall #story{height:950vh}
+html.tall #story{height:560vh}
 
 /* gallery */
 .block{padding:clamp(70px,10vw,130px) clamp(16px,4vw,48px)}
@@ -151,3 +151,40 @@ html.tall .place button{padding:8px 12px;font-size:11px}
 .gal-tabs button{color:#c9c5b8}
 .gal-tabs button[aria-pressed=true]{background:#f1eee6;color:#14171a}
 .real{transition:opacity .5s ease}
+
+/* ---- MyDwell brand */
+.hero-logo{display:block;height:clamp(46px,6vw,78px);width:auto;margin:0 0 26px}
+html.tall .hero-logo{height:40px;margin-bottom:14px}
+#intro h1{font-weight:600;letter-spacing:-.025em}
+footer{display:flex;align-items:center;gap:22px;flex-wrap:wrap}.foot-logo{height:26px;width:auto}footer p{margin:0}
+
+/* ---- right-scroll: more spaces, light and places */
+#more{position:relative;height:calc(var(--n,12) * 55vh + 100vh);background:#0d0f10}
+.msticky{position:sticky;top:0;height:100svh;overflow:hidden}
+.mtrack{position:absolute;inset:0;display:flex;will-change:transform}
+.mslide{position:relative;flex:0 0 100vw;height:100%;margin:0;overflow:hidden;background:#0d0f10}
+.mslide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.12);will-change:transform}
+.mslide figcaption{position:absolute;left:clamp(16px,3.4vw,44px);bottom:clamp(84px,11vh,120px);max-width:min(560px,80vw);color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.mslide figcaption b{display:block;font-family:var(--serif);font-weight:600;font-size:clamp(30px,3.6vw,56px);line-height:1.02;letter-spacing:-.015em;margin:8px 0 8px}
+.mslide figcaption .mk,.mslide figcaption .ms{font:600 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.92}
+.mslide::after{content:"";position:absolute;inset:auto 0 0 0;height:45%;background:linear-gradient(transparent,rgba(0,0,0,.55));pointer-events:none}
+.mslide figcaption{z-index:2}
+.mhud{position:absolute;left:clamp(16px,3.4vw,44px);right:clamp(16px,3.4vw,44px);bottom:26px;display:flex;align-items:center;justify-content:space-between;gap:18px;z-index:3;color:#fff}
+.mhint{margin:0;font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;transition:opacity .4s}
+.mhint span{display:inline-block;animation:nudge 1.4s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:none}50%{transform:translateX(6px)}}
+.mctl{display:flex;align-items:center;gap:12px;font:600 12px var(--mono);letter-spacing:.1em}
+.mctl button{all:unset;cursor:pointer;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:1.5px solid rgba(255,255,255,.7);font-size:16px}
+.mctl button:hover{background:#fff;color:#14171a}.mctl button:focus-visible{outline:2px solid var(--sand)}
+.mprog{position:absolute;left:0;right:0;bottom:-26px;height:3px;background:rgba(255,255,255,.18)}
+.mprog i{display:block;height:100%;background:#fff;transform-origin:left;transform:scaleX(0)}
+html.tall #more{height:auto;padding:64px 0 28px}
+html.tall .msticky{position:relative;height:auto;overflow:visible}
+html.tall .mtrack{position:relative;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding:0 6vw;transform:none!important;scrollbar-width:none}
+html.tall .mtrack::-webkit-scrollbar{display:none}
+html.tall .mslide{flex:0 0 88vw;height:66svh;border-radius:14px;scroll-snap-align:center}
+html.tall .mslide img{transform:none!important}
+html.tall .mslide figcaption{bottom:22px}
+html.tall .mhud{position:relative;left:auto;right:auto;bottom:auto;margin:18px 6vw 0}
+html.tall .mprog{bottom:-14px}
+@media (prefers-reduced-motion:reduce){.mhint span{animation:none}}

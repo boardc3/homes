@@ -1,7 +1,11 @@
+import '@fontsource/fraunces/400-italic.css';
+import '@fontsource/fraunces/600.css';
+import '@fontsource/fraunces/400.css';
 import './style.css';
 import { stages, dims, N, fmt } from './scene.js';
 import { initStory } from './story.js';
 import { initViewer } from './viewer.js';
+import { initMore } from './more.js';
 import north from './data/elev_north.svg?raw';
 import south from './data/elev_south.svg?raw';
 import east from './data/elev_east.svg?raw';
@@ -11,6 +15,7 @@ const $ = (id) => document.getElementById(id);
 
 initStory();
 initViewer();
+initMore();
 
 /* renderings */
 const SETS = {
@@ -20,6 +25,15 @@ const SETS = {
     ['laguna-patio', 'Patio, living room and the coast', 'North-west · Catalina on the horizon', ''],
     ['laguna-approach', 'The approach', 'South-west · canyon hills', ''],
     ['laguna-aerial', 'From above', 'Drone · the Laguna coastline', ''],
+    ['int-living', 'Living room', 'Facing the ocean · sunset', ''],
+    ['int-kitchen', 'Kitchen on the Corten spine', 'Morning', ''],
+    ['int-bedroom', 'Front bedroom', 'First light', 'wide'],
+  ],
+  suburb: [
+    ['suburb-street', 'On a suburban street', 'Infill lot · golden hour', 'wide'],
+    ['suburb-street-dusk', 'Evening on the block', 'Infill lot · blue hour', ''],
+    ['suburb-backyard', 'The backyard', 'Fenced lot · golden hour', ''],
+    ['suburb-aerial', 'In the neighborhood', 'From above', 'wide'],
   ],
   lake: [
     ['wild-lake', 'From the lake shore', 'Golden hour · north-east', 'wide'],

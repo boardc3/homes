@@ -190,7 +190,7 @@ export function initStory() {
     const fl = smooth((p - stageStart(3)) / SPAN);
     $('ka').textContent = fmt(dims.gray * fl);
     $('intro').style.opacity = 1 - smooth(p / .035);
-    if (document.documentElement.classList.contains('tall')) $('cap').style.opacity = smooth((p - .03) / .02); else $('cap').style.opacity = '';
+    $('cap').style.opacity = smooth((p - .03) / .02);
     $('cue').style.opacity = 1 - smooth(p / .02);
     $('bar').style.transform = `scaleX(${p})`;
     caption(p);
@@ -205,7 +205,7 @@ export function initStory() {
     requestAnimationFrame(tick);
     target = progress();
     if (shown < 0 || reduce) shown = target;
-    else shown += (target - shown) * .14;
+    else shown += (target - shown) * .2;
     if (Math.abs(target - shown) < .0004) shown = target;
     if (shown !== tick.last || dirty) { draw(shown); tick.last = shown; dirty = false; }
   }

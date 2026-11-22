@@ -22,7 +22,7 @@ const fp = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints([
 fp.computeLineDistances(); scene.add(fp);
 
 // timeline (seconds)
-const INTRO = 1.8, DUR = 2.2, OUTRO = 5.4;
+const INTRO = 1.2, DUR = 1.6, OUTRO = 4.2;
 const start = (s) => INTRO + (s - 1) * DUR;            // stage s (1..N-1) starts here
 const DONE = start(N - 1) + DUR;                        // last stage settles
 const TOTAL = DONE + OUTRO;
