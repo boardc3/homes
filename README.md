@@ -36,6 +36,16 @@ Key numbers: gray living area 720.8 sq ft · entire platform 1,666.5 sq ft · 4 
 - **Type**: Fraunces for display, system sans for body, system mono for labels.
 - **Files**: `public/brand/` — mydwell-logo(.svg / -light), mydwell-mark, mydwell-wordmark, favicon.svg / -32.png, apple-touch-icon, icon-192/512, og-image.jpg (1200x630, used for Open Graph + Twitter). Regenerate with `python3 tools/brand.py && python3 tools/brand_raster.py`.
 
+## Link preview clip
+
+`preview.html` + `src/preview.js` render the 12.5 s seamless loop used for iMessage and social previews
+(`public/media/mydwell-preview.mp4`): Laguna at sunset, the house lifts away to the empty hillside
+(`laguna-empty-dusk.jpg`, the same photograph with the house removed), the steel frame draws itself on the
+site from the photograph's own camera, the finished house resolves in place, then the suburb, the living
+room and the mountain lake, and back to the first frame. `public/brand/og-image.jpg` is frame 0, so the
+still and the clip open identically. Re-record with `python3 tools/recpreview.py` (dev server on :4174),
+then encode two-pass at 2800k to stay well under Apple's 10 MB preview budget.
+
 ## Ship it
 
 First time (Vercel project linked to this GitHub repo):
