@@ -1,6 +1,6 @@
 # MyDwell — build presentation site (repo: homes)
 
-Live: https://homes-chris-ccolbertcoms-projects.vercel.app (Vercel project `homes`, deploys on every push to `main`).
+Live: https://www.mydwell.io (Vercel project `homes`, deploys on every push to `main`).
 
 One guided scroll story, then the technical set:
 
@@ -24,7 +24,7 @@ Key numbers: gray living area 720.8 sq ft · entire platform 1,666.5 sq ft · 4 
 
 - `og:video` → `public/media/mydwell-preview.mp4` (10.8 s, 1280x720 H.264, 2.5 MB, silent): the MyDwell lockup over the platform and frame going up, then Laguna at sunset, the suburban street, the lake and the living room. Messages plays a direct MP4 inline and loops it; icon + image + video must stay under 10 MB total.
 - `og:image` → `public/brand/og-image.jpg` (1200x630), the fallback still. Icon → `apple-touch-icon.png`.
-- All preview URLs are absolute to `https://homes-chris-ccolbertcoms-projects.vercel.app`. Change BASE in index.html if a custom domain is added.
+- All preview URLs are absolute to `https://www.mydwell.io`. Change BASE in index.html if a custom domain is added.
 - Rebuild the clip: `npm run dev -- --port 4174`, then `python3 tools/recpreview.py`, then ffmpeg (see that script).
 - **Previews need the site to be public.** With Vercel Authentication on, Messages' preview fetcher gets the Vercel login page instead of these tags.
 
