@@ -13,9 +13,9 @@ html,body{{margin:0;width:1200px;height:630px;overflow:hidden;background:#14171A
 .sh{{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,12,13,.88) 0%,rgba(10,12,13,.6) 24%,rgba(10,12,13,0) 46%),linear-gradient(180deg,rgba(10,12,13,.55) 0%,rgba(10,12,13,0) 28%)}}
 .lg{{position:absolute;left:56px;top:44px}}.lg svg{{height:62px;width:auto}}
 .c{{position:absolute;left:56px;right:56px;bottom:46px;color:#F3F0E8;display:flex;flex-direction:column;gap:14px}}
-h1{{margin:0;font:600 50px/1 F,Georgia,serif;letter-spacing:-.02em}}
-p{{margin:0;font:600 15px ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;color:#E2A27C}}
-</style></head><body><div class="bg"></div><div class="sh"></div><div class="lg">{logo_l}</div><div class="c"><h1>From bare ground to a real place.</h1><p>Frame to finish · Laguna Beach · Suburbs · The wild</p></div></body></html>'''
+h1{{margin:0;font:600 46px/1.04 F,Georgia,serif;letter-spacing:-.02em;max-width:900px}}
+p{{margin:0;font:600 17px ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;color:#E2A27C}}
+</style></head><body><div class="bg"></div><div class="sh"></div><div class="lg">{logo_l}</div><div class="c"><h1>The home you were told you couldn’t afford.</h1><p>$100,000 · Two bedrooms · Glass on every wall</p></div></body></html>'''
 async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch(executable_path='/usr/bin/google-chrome',args=['--no-sandbox'])

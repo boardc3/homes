@@ -15,10 +15,10 @@ const P_FRAME0 = .06, P_FRAME1 = .60, P_ENC1 = .80, P_CAM = .88, P_REAL0 = .86, 
 const SPAN = (P_FRAME1 - P_FRAME0) / (N - 1);
 const stageStart = (s) => P_FRAME0 + (s - 1) * SPAN;
 const ENC = [                         // enclosure layers, in build order
-  { key: 'deck',  kinds: ['deck', 'floor'], t: 'Deck and floors', n: 'Oiled ipe decking over the whole platform: 1,666.5 sq ft. Inside, 720.8 sq ft: the living area in the wider block and two bedrooms in the deeper block.' },
-  { key: 'walls', kinds: ['cedar', 'glass', 'wall'], t: 'Walls', n: 'Glass everywhere: every exterior wall is floor-to-ceiling glass in black steel frames. Inside, one partition splits the deeper block into two 16 ft × 12 ft bedrooms, with the frame posts inside it.' },
-  { key: 'roofs', kinds: ['roof'], t: 'Roofs', n: 'Left: a 12 in. drainage fall from north to south. Right: a shed roof from 14 ft at the spine down to 10 ft at the east edge.' },
-  { key: 'spine', kinds: ['spine'], t: 'The spine', n: 'The twelve red tower columns are clad as one weathering-steel fin, 16.5 ft tall, the full depth of the house.' },
+  { key: 'deck',  kinds: ['deck', 'floor'], t: 'Deck', n: 'A deck all the way round: 1,666.5 sq ft of platform, 720.8 of it indoors.' },
+  { key: 'walls', kinds: ['cedar', 'glass', 'wall'], t: 'Glass', n: 'Every outside wall is glass, because daylight is the one finish that costs nothing. One wall splits the bedroom wing into two 16 by 12 ft rooms.' },
+  { key: 'roofs', kinds: ['roof'], t: 'Roofs', n: 'A low roof over the living wing, a tall shed roof over the bedrooms, deep overhangs to keep the sun off the glass.' },
+  { key: 'spine', kinds: ['spine'], t: 'Corten spine', n: 'The columns that carry it all, wrapped in weathering steel that only looks better with age.' },
 ];
 const ENC_SPAN = (P_ENC1 - P_FRAME1) / ENC.length;
 
@@ -114,22 +114,21 @@ export function initStory() {
   let lastKey = '';
   function caption(p) {
     let kick, title, note, chips = [];
-    if (p < P_FRAME0) { kick = 'Chapter 1 · Ground'; title = stages[0].title; note = 'The lot, staked out to the exact footprint: 606 in. × 396 in. (50 ft 6 in. × 33 ft).'; }
+    const two = (n) => String(n).padStart(2, '0');
+    if (p < P_FRAME0) { kick = '01 Ground'; title = stages[0].title; note = stages[0].note; }
     else if (p < P_FRAME1) {
       const s = Math.min(N - 1, 1 + Math.floor((p - P_FRAME0) / SPAN)), st = stages[s];
-      kick = `Chapter 2 · Frame · Step ${String(s).padStart(2, '0')} of ${N - 1}`; title = st.title; note = st.note;
-      if (st.l4) chips.push(`+${fmt(st.l4)} ft 4 in. × 4 in.`); if (st.l3) chips.push(`+${fmt(st.l3)} ft 3 in. × 2 in.`);
+      kick = `02 Frame · ${two(s)} of ${N - 1}`; title = st.title; note = st.note;
+      if (st.l4) chips.push(`+${fmt(st.l4)} ft of 4 in. tube`); if (st.l3) chips.push(`+${fmt(st.l3)} ft of 3 × 2 in. tube`);
     } else if (p < P_REAL0) {
       const e = Math.min(ENC.length - 1, Math.floor((p - P_FRAME1) / ENC_SPAN));
-      kick = `Chapter 3 · Enclosure · ${e + 1} of ${ENC.length}`; title = ENC[e].t; note = ENC[e].n; chips.push('Concept finishes');
+      kick = `03 Enclosure · ${two(e + 1)} of ${two(ENC.length)}`; title = ENC[e].t; note = ENC[e].n;
     } else {
       const d = p >= P_DUSK0, L = place === 'laguna';
-      kick = 'Chapter 4 · A real place';
-      title = L ? (d ? 'Sunset over the Pacific' : 'Laguna Beach') : (d ? 'Evening at the lake' : 'A place in the wild');
-      note = (L ? 'On a coastal hillside above Laguna Beach, Catalina on the horizon. ' : 'Beside a mountain lake. ') + 'Conceptual rendering made from this exact camera and the model\u2019s exact geometry: same roofs, posts, spine and deck.';
-      chips.push(d ? (L ? 'Sunset' : 'Blue hour') : 'Golden hour', 'Switch the setting above');
+      kick = '04 Place'; title = L ? 'Laguna Beach' : 'Mountain lake';
+      note = 'Same house, same $100,000. ' + (L ? 'This time on a coastal hillside, Catalina on the horizon.' : 'This time in a clearing by the water.');
     }
-    const key = kick + title + place;
+    const key = kick + title + place + note;
     if (key === lastKey) return; lastKey = key;
     $('cap-k').textContent = kick; $('cap-t').textContent = title; $('cap-n').textContent = note;
     $('cap-c').innerHTML = chips.map((c) => `<span>${c}</span>`).join('');

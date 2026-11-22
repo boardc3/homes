@@ -94,6 +94,9 @@ export function initViewer() {
     roof: new THREE.MeshStandardMaterial({ map: T.roof, roughness: .62, metalness: .25, envMap: env, envMapIntensity: .35 }),
     cedar: new THREE.MeshStandardMaterial({ map: T.cedar, roughness: .8 }),
     wall: new THREE.MeshStandardMaterial({ color: 0xe9e4da, roughness: .9 }),
+    rug: new THREE.MeshStandardMaterial({ color: 0xd9d2c3, roughness: 1 }), sofa: new THREE.MeshStandardMaterial({ color: 0xb9b3a6, roughness: .95 }),
+    table: new THREE.MeshStandardMaterial({ color: 0x6b4a33, roughness: .6 }), cab: new THREE.MeshStandardMaterial({ color: 0xc9a36d, roughness: .6 }),
+    bed: new THREE.MeshStandardMaterial({ color: 0xf4f2ee, roughness: .9 }), night: new THREE.MeshStandardMaterial({ color: 0xa0794f, roughness: .7 }),
     glass: new THREE.MeshStandardMaterial({ color: 0x24323a, roughness: .04, metalness: .7, envMap: env, envMapIntensity: .55, transparent: true, opacity: .62, depthWrite: false }),
   };
   const realMats = new Set();
@@ -156,8 +159,8 @@ export function initViewer() {
     document.getElementById('viewer').classList.toggle('is-real', e > .5);
   }
   const NOTE = {
-    real: 'Built out with the concept finishes: glass on every wall, ipe deck, Corten spine, standing-seam roofs. The living area is in the wider block behind the patio, two bedrooms in the deeper block under the tall roof, and the lake to the north.',
-    beams: `The steel exactly as drawn: <b>${fmt(dims.l4)} ft</b> of 4 in. × 4 in. tube and <b>${fmt(dims.l3)} ft</b> of 3 in. × 2 in. tube on 54 legs.`,
+    real: 'Finished: glass on every wall, ipe deck, Corten spine, standing-seam roofs. Living wing behind the patio, two bedrooms under the shed roof.',
+    beams: `The frame as drawn: <b>${fmt(dims.l4)} ft</b> of 4 in. tube and <b>${fmt(dims.l3)} ft</b> of 3 × 2 in. tube on 54 legs.`,
   };
   const setNote = () => { document.getElementById('viewer-note').innerHTML = NOTE[mode]; };
   const seg = document.getElementById('look');

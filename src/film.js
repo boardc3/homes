@@ -1,3 +1,4 @@
+import '@fontsource/fraunces/600.css';
 import * as THREE from 'three';
 import { buildModel, stages, dims, N, fmt } from './scene.js';
 const $ = (id) => document.getElementById(id);
@@ -67,8 +68,8 @@ window.__film = (t) => {
   $('a').textContent = fmt(c4); $('d').textContent = fmt(c3);
   // titles
   const fin = t >= DONE;
-  $('k').textContent = fin ? 'Complete' : cur === 0 ? 'Start' : 'Step ' + String(cur).padStart(2, '0') + ' of ' + (N - 1);
-  $('t').textContent = fin ? 'Finished build' : cur === 0 ? 'Bare ground' : stages[cur].title;
+  $('k').textContent = fin ? 'Complete' : cur === 0 ? 'Ground' : 'Frame · ' + String(cur).padStart(2, '0') + ' of ' + (N - 1);
+  $('t').textContent = fin ? 'Finished frame' : cur === 0 ? 'Bare ground' : stages[cur].title;
   const xa = smooth((t - DONE) / .9);
   $('fa').style.opacity = xa; $('fb').style.opacity = xa;
   segs.forEach((u, i) => { u.style.width = (clamp((t - start(i + 1)) / DUR) * 100) + '%'; });

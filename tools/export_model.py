@@ -169,26 +169,26 @@ def LC(a,b): return (M[b][3]-M[a][3])/12
 stages=[]
 def add(id,title,items,l4,lc,note,cnt):
     stages.append(dict(id=id,title=title,items=[dict(c=c,v=r(v)) for c,v in items],l4=round(l4,2),l3=round(lc,2),note=note,count=cnt))
-add('ground','Bare ground',[],0,0,'Nothing built. The site is an empty lot; the grid below is laid out in inches from the platform origin.',0)
+add('ground','Bare ground',[],0,0,'Any lot will do. This one is staked to the exact footprint: 50 ft 6 in. by 33 ft.',0)
 fo=[]
 for cx,cy in nodes:
     fo.append(('plate',hexa(cx-5,cy-5,10,10,-PT,0))); fo.append(('leg',hexa(cx-2,cy-2,4,4,0,F)))
-add('footings','Footings and legs',fo,len(nodes)*F/12,0,f'{len(nodes)} legs, each a 4 in. x 4 in. tube 10 in. tall on a 10 in. x 10 in. plate.',len(nodes))
+add('footings','Footings',fo,len(nodes)*F/12,0,'The whole house stands on 54 steel legs, each on a 10 in. plate. Light on the land, easy on the budget.',len(nodes))
 pl=[('bridge' if k=='b' else 'plat',hexa(x,y,w,h,F,F+T)) for k,x,y,w,h in pieces]
-add('platform','Platform grid',pl,tot4_pl:=sum(max(p[3],p[4]) for p in pieces)/12,0,'The 4 in. x 4 in. tube platform: 15 squares at 97 in. pitch, 12 in. gaps with four bridge tubes, and the 50.5 in. border ring.',len(pieces))
+add('platform','Platform',pl,tot4_pl:=sum(max(p[3],p[4]) for p in pieces)/12,0,'A grid of 4 in. square tube: fifteen 8 ft bays inside a 4 ft border ring.',len(pieces))
 fl=[]
 for i,j,bb in cells:
     x0=T+i*P+bb;y0=T+j*P
     fl.append(('patio' if (bb==0 and j==2) else 'floor',hexa(x0,y0,I,I,DECK-1.5,DECK-0.5)))
-add('floors','Gray floor and patio',fl,0,0,'Twelve 93 in. x 93 in. gray floor cells make the living area. The three white cells at the north end are the patio.',len(fl))
+add('floors','Floor and patio',fl,0,0,'Twelve floor cells for the rooms. The three open cells at the north end become the patio.',len(fl))
 tw=[('col',hexa(cx-2,cy-2,4,4,DECK,CT)) for cx,cy in cols]+[('cap',hexa(x,y,w,h,CT,CT+T)) for x,y,w,h in rails+rungs]
-add('tower','Red tower columns',tw,(coltot+captot)/12,0,'Twelve 4 in. x 4 in. columns rise 15 ft above the deck at x = 293 and 309, joined by cap rails and rungs.',len(tw))
-add('left','Living block frame (raked)',seg('start','left_end'),L4('start','left_end'),0,'Frame over the living area, the wider 3 x 2 block behind the patio: 11 ft above the deck at the patio edge, falling 12 in. to the south.',0)
-add('right','Bedroom block frame (sloped)',seg('left_end','right_end'),L4('left_end','right_end'),0,'Frame over the two bedrooms, the deeper 2 x 3 block: roof from 14 ft at the tower down to 10 ft at the east edge. Its interior posts stand in the wall between the bedrooms at y = 147.5 in., so each 16 ft x 12 ft room is clear.',0)
-add('canopy_sw','Canopy: west and south joists',seg('can0','can_sw_end'),0,LC('can0','can_sw_end'),'3 in. x 2 in. joists about every 48.5 in. over the west and south perimeter squares, raking with the roof.',0)
-add('canopy_patio','Canopy: patio extension',seg('can_sw_end','can_patio_end'),0,LC('can_sw_end','can_patio_end'),'The canopy continues over the white patio cells and north border, still in 3 in. x 2 in. tube, on the same continuous 1 ft fall.',0)
-add('canopy_right','Canopy: right block',seg('can_patio_end','can_right_end'),0,LC('can_patio_end','can_right_end'),'South, north and east joists over the perimeter squares of the sloped right block.',0)
-add('edge','North edge tube and uprights',seg('can_right_end','end'),L4('can_right_end','end'),0,'A 4 in. x 4 in. edge tube along the front (north) canopy edge, held up by four 4 in. x 4 in. uprights on the border tube.',0)
+add('tower','Spine columns',tw,(coltot+captot)/12,0,'Twelve columns rise 15 ft above the deck where the two wings meet.',len(tw))
+add('left','Living wing',seg('start','left_end'),L4('start','left_end'),0,'The wider wing, behind the patio: 11 ft at the patio edge, falling 12 in. to the south for drainage.',0)
+add('right','Bedroom wing',seg('left_end','right_end'),L4('left_end','right_end'),0,'The deeper wing: a shed roof from 14 ft at the spine to 10 ft at the east edge. Its interior posts sit in the wall between the two bedrooms.',0)
+add('canopy_sw','Canopy',seg('can0','can_sw_end'),0,LC('can0','can_sw_end'),'3 by 2 in. joists every 4 ft over the west and south deck, following the roof fall.',0)
+add('canopy_patio','Patio canopy',seg('can_sw_end','can_patio_end'),0,LC('can_sw_end','can_patio_end'),'The canopy carries on over the patio and the north deck.',0)
+add('canopy_right','Bedroom canopy',seg('can_patio_end','can_right_end'),0,LC('can_patio_end','can_right_end'),'Joists over the deck around the bedroom wing.',0)
+add('edge','Patio edge',seg('can_right_end','end'),L4('can_right_end','end'),0,'A 4 in. beam along the north edge of the patio, on four slim posts.',0)
 for st in stages: st['count']=len(st['items'])
 tot4_all=sum(s['l4'] for s in stages); totc=sum(s['l3'] for s in stages)
 gray=12*I*I/144; total=(W+2*R)*(D+2*R)/144
@@ -279,5 +279,20 @@ wall('glass',311,501,292,294,RT)      # bedrooms north (lake)
 wall('glass',502,504,4,291,RT)        # bedrooms east
 wall('glass',311,501,1,3,RT)          # bedrooms south
 wall('wall',311,501,146,149,RT)       # partition between the two bedrooms (posts at y=147.5 sit inside it)
+
+# ---------- FURNITURE LAYOUT (plan-accurate; floor at DECK+1.3)
+FL=DECK+1.3
+def fb(c,x0,x1,y0,y1,z0,z1): BO.append(dict(c=c,v=r(hexa(x0,y0,x1-x0,y1-y0,FL+z0,FL+z1))))
+# living block (x 2..291, y 2..196): living zone west of the x=99 posts, dining between the posts, kitchen on the spine
+fb('rug',12,96,38,160,0,.5)
+fb('sofa',50,86,52,146,0,15); fb('sofa',80,86,52,146,15,30)          # sofa faces west (ocean), back to the posts
+fb('table',22,40,80,118,0,16)                                        # coffee table
+fb('table',108,187,81,117,28.5,30); fb('table',112,114,85,113,0,28.5); fb('table',181,183,85,113,0,28.5)   # dining table between the posts
+fb('cab',267,291,20,176,0,36)                                        # 13 ft kitchen run on the Corten spine
+fb('cab',279,291,60,136,56,57.5)                                     # floating shelf
+# bedrooms (x 311..501): beds with headboards on the spine wall, partition at y 146..149
+for yc in (75,220):
+    fb('bed',315,395,yc-38,yc+38,0,22); fb('night',311,315,yc-42,yc+42,0,40)
+    fb('night',311,329,yc-62,yc-44,0,24); fb('night',311,329,yc+44,yc+62,0,24)
 json.dump(BO,open('/home/claude/site/data/buildout.json','w'),separators=(',',':'))
 print('buildout items',len(BO))

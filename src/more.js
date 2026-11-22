@@ -1,27 +1,48 @@
 // "Keep going →": after the story's final shot, vertical scroll pans RIGHT through the finished house
 // in other spaces, light and places. Desktop: pinned track driven by scroll (+ trackpad sideways swipes,
 // arrow keys, buttons, settle-to-nearest). Phones: a native swipe carousel with snap.
+// [image, title, subtitle, camera]  — cameras are the exact model cameras each rendering was made from
+const CAM = {
+  A: [[1012.5, 1027.5], [242.5, 147.5], 66], B: [[-507.5, -672.5], [262.5, 177.5], 66], C: [[372.5, -902.5], [252.5, 207.5], 66],
+  D: [[-367.5, 847.5], [232.5, 207.5], 66], I1: [[252, 165], [2, 88], 87], I2: [[38, 165], [291, 62], 87], I3: [[495, 158], [311, 245], 87],
+};
 const SLIDES = [
-  ['laguna-hero-dusk', 'Sunset over the Pacific', 'Laguna Beach', 'Exterior · sunset'],
-  ['laguna-night', 'Moon on the water', 'Laguna Beach', 'Exterior · night'],
-  ['laguna-morning', 'Marine layer', 'Laguna Beach', 'Exterior · early morning'],
-  ['int-living', 'Living room, facing the ocean', 'Laguna Beach', 'Living area · sunset'],
-  ['int-kitchen', 'Kitchen on the Corten spine', 'Laguna Beach', 'Living area · morning'],
-  ['int-bedroom', 'The front bedroom', 'Laguna Beach', 'Bedroom block · first light'],
-  ['laguna-patio-dusk', 'The covered patio', 'Laguna Beach', 'Patio · blue hour'],
-  ['suburb-street', 'On a suburban street', 'Suburban infill', 'Street · golden hour'],
-  ['suburb-street-dusk', 'Evening on the block', 'Suburban infill', 'Street · blue hour'],
-  ['suburb-backyard', 'The backyard', 'Suburban infill', 'Backyard · golden hour'],
-  ['suburb-aerial', 'In the neighborhood', 'Suburban infill', 'From above · golden hour'],
-  ['wild-lake-dusk', 'Or somewhere wild', 'Mountain lake', 'Exterior · blue hour'],
+  ['laguna-hero-dusk', 'Laguna Beach', 'Sunset', 'A', 'The view is the luxury. The house is $100,000.'],
+  ['laguna-night', 'Laguna Beach', 'Night', 'A', 'Lit from within, it reads like a lantern on the hill.'],
+  ['laguna-morning', 'Laguna Beach', 'Morning fog', 'A', 'With glass on every wall, the weather is part of the decor.'],
+  ['int-living', 'Living room', 'Laguna Beach · Sunset', 'I1', 'One open room with glass on three sides.'],
+  ['int-kitchen', 'Kitchen and dining', 'Laguna Beach · Morning', 'I2', 'A full kitchen along the steel spine, a long table between the columns.'],
+  ['int-bedroom', 'Bedroom', 'Laguna Beach · First light', 'I3', 'Both bedrooms get glass on two sides. Mornings arrive early.'],
+  ['laguna-patio-dusk', 'Covered patio', 'Laguna Beach · Blue hour', 'D', 'A second living room, outdoors, under its own steel canopy.'],
+  ['suburb-street', 'Suburban street', 'Golden hour', 'B', 'It fits an ordinary lot on an ordinary street.'],
+  ['suburb-street-dusk', 'Suburban street', 'Evening', 'B', 'Lights on, curtains open. A house that looks like it costs far more.'],
+  ['suburb-backyard', 'Backyard', 'Suburban lot · Golden hour', 'D', 'Set it behind the house you have: room for a parent, a grown kid, a tenant.'],
+  ['suburb-aerial', 'The neighborhood', 'Suburban lot · From above', 'C', 'One more household, on land that was already there.'],
+  ['wild-lake-dusk', 'Mountain lake', 'Blue hour', 'A', 'Or go far from everything. It stands on its own legs.'],
 ];
+// key plan: the house in plan (north up) with the camera position and its field of view
+function keyPlan(k) {
+  const [[ex, ey], [tx, ty], fov] = CAM[k], cx = 252.5, cy = 147.5, inside = k[0] === 'I';
+  let px = ex, py = ey;
+  if (!inside) { const dx = ex - cx, dy = ey - cy, d = Math.hypot(dx, dy); px = cx + dx / d * 430; py = cy + dy / d * 430; }
+  const a = Math.atan2(ty - py, tx - px), h = fov / 2 * Math.PI / 180, L = inside ? 150 : 190;
+  const p1 = [px + Math.cos(a - h) * L, py + Math.sin(a - h) * L], p2 = [px + Math.cos(a + h) * L, py + Math.sin(a + h) * L];
+  const R = (x0, y0, x1, y1, c) => `<rect x="${x0}" y="${-y1}" width="${x1 - x0}" height="${y1 - y0}" class="${c}"/>`;
+  return `<svg viewBox="-280 -660 1065 1020" aria-hidden="true">
+    ${R(-50.5, -50.5, 555.5, 345.5, 'kp-deck')}${R(2, 2, 291, 196, 'kp-room')}${R(311, 2, 503, 293, 'kp-room')}${R(311, 146, 503, 149, 'kp-wall')}
+    ${R(2, 198, 291, 291, 'kp-patio')}${R(291, -50.5, 311, 345.5, 'kp-spine')}
+    <path d="M${px} ${-py} L${p1[0]} ${-p1[1]} A${L} ${L} 0 0 1 ${p2[0]} ${-p2[1]} Z" class="kp-cone"/>
+    <circle cx="${px}" cy="${-py}" r="${inside ? 16 : 22}" class="kp-cam"/>
+    <text x="-250" y="-600" class="kp-n">N ↑</text></svg>`;
+}
 export function initMore() {
   const sec = document.getElementById('more'), track = document.getElementById('mtrack');
   const N = SLIDES.length, $ = (id) => document.getElementById(id);
-  track.innerHTML = SLIDES.map(([f, t, place, sub], i) => `
+  track.innerHTML = SLIDES.map(([f, t, sub, cam, line], i) => `
     <figure class="mslide">
-      <img src="/media/${f}-1280.jpg" srcset="/media/${f}-1280.jpg 1280w, /media/${f}.jpg 2400w" sizes="100vw" alt="Conceptual rendering: ${t.toLowerCase()}, ${place}" ${i < 2 ? '' : 'loading="lazy"'} decoding="async">
-      <figcaption><span class="mk">${String(i + 1).padStart(2, '0')} / ${N} · ${place}</span><b>${t}</b><span class="ms">${sub} · conceptual rendering</span></figcaption>
+      <img src="/media/${f}-1280.webp" srcset="/media/${f}-1280.webp 1280w, /media/${f}.webp 2400w" sizes="100vw" alt="${t}, ${sub.toLowerCase()} (conceptual rendering)" ${i < 2 ? '' : 'loading="lazy"'} decoding="async">
+      <figcaption><span class="mk">${String(i + 1).padStart(2, '0')} / ${N}</span><b>${t}</b><span class="ml">${line}</span><span class="ms">${sub}</span></figcaption>
+      <div class="kp" title="Camera position">${keyPlan(cam)}</div>
     </figure>`).join('');
   sec.style.setProperty('--n', N);
   const slides = [...track.children], imgs = slides.map((s) => s.querySelector('img'));

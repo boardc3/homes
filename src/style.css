@@ -188,3 +188,38 @@ html.tall .mslide figcaption{bottom:22px}
 html.tall .mhud{position:relative;left:auto;right:auto;bottom:auto;margin:18px 6vw 0}
 html.tall .mprog{bottom:-14px}
 @media (prefers-reduced-motion:reduce){.mhint span{animation:none}}
+
+/* plan furniture + room names */
+.pfur .pf{fill:none;stroke:#14171a;stroke-width:1.2;opacity:.55}
+.pfur .pf-rug{stroke-dasharray:4 3;opacity:.35}.pfur .pf-cab{fill:#c9a36d;opacity:.6}.pfur .pf-bed{fill:#fff;opacity:.85}
+.pl{font:600 12px ui-monospace,Menlo,monospace;letter-spacing:.14em;fill:#14171a;text-anchor:middle;paint-order:stroke;stroke:#fbfaf6;stroke-width:4}
+.pl-s{fill:#9c4a26}
+.mnote{margin:0 auto 0 18px;font:600 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+
+/* key plan on each Spaces slide */
+.kp{position:absolute;right:clamp(16px,3.4vw,44px);top:78px;width:clamp(96px,10vw,150px);aspect-ratio:1065/1020;z-index:2;
+  background:rgba(243,240,232,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:12px;padding:8px}
+.kp svg{width:100%;height:100%;display:block;overflow:visible}
+.kp-deck{fill:#e6dccb;stroke:#14171a;stroke-width:6}.kp-room{fill:#fbfaf6;stroke:#14171a;stroke-width:6}.kp-wall{fill:#14171a}
+.kp-patio{fill:none;stroke:#14171a;stroke-width:4;stroke-dasharray:14 10}.kp-spine{fill:#9c4a26}
+.kp-cone{fill:rgba(156,74,38,.28);stroke:#9c4a26;stroke-width:5}.kp-cam{fill:#9c4a26;stroke:#fff;stroke-width:6}
+.kp-n{font:700 56px ui-monospace,Menlo,monospace;fill:#14171a}
+html.tall .kp{top:12px;right:12px;width:84px;padding:5px}
+
+/* price */
+#intro .lede strong.price{font-family:var(--serif);font-weight:600;color:var(--corten);font-size:1.25em;white-space:nowrap}
+#intro .lede2{margin:12px 0 0;font:600 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+#intro h1{max-width:13ch}
+.price-sec{background:#101315;color:#f1eee6}
+.price-sec .eyebrow{color:#e2a27c}
+.price-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,5vw,80px);align-items:start;max-width:1280px}
+.big-price{font-size:clamp(64px,10vw,150px);line-height:.9;color:#e2a27c;letter-spacing:-.03em}
+.price-sec h2{font-size:clamp(34px,4.4vw,58px)}
+.price-lede{color:#c9c5b8;font-size:clamp(16px,1.35vw,19px);max-width:52ch;margin:20px 0 0}
+.price-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:0;border-top:1px solid rgba(255,255,255,.14)}
+.price-list li{display:flex;flex-direction:column;gap:4px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.14)}
+.price-list b{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2vw,28px)}
+.price-list span{color:#b9b5a8;font-size:15px}
+@media (max-width:900px){.price-grid{grid-template-columns:1fr}}
+.mslide figcaption .ml{display:block;font-size:clamp(15px,1.35vw,19px);line-height:1.4;margin:0 0 12px;max-width:40ch;opacity:.96}
+html.tall .mslide figcaption .ml{font-size:14px;margin-bottom:8px}
