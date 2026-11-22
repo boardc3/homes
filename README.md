@@ -44,7 +44,7 @@ Key numbers: gray living area 720.8 sq ft · entire platform 1,666.5 sq ft · 4 
 site from the photograph's own camera, the finished house resolves in place, then the suburb, the living
 room and the mountain lake, and back to the first frame. `public/brand/og-image.jpg` is frame 0, so the
 still and the clip open identically. Re-record with `python3 tools/recpreview.py` (dev server on :4174),
-then encode two-pass at 2800k to stay well under Apple's 10 MB preview budget.
+then encode two-pass at 960x540 / 1000k (~1.6 MB) so Messages finishes downloading it before Send. Bump the filename (`-v3`, `-v4`…) on every change so phones don't reuse a cached preview.
 
 ## Ship it
 
