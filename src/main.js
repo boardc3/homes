@@ -67,15 +67,16 @@ $('price-list').innerHTML = [
 ].map(([b, s]) => `<li><b>${b}</b><span>${s}</span></li>`).join('');
 
 /* numbers */
+const ftin = (inch) => { const f = Math.floor(inch / 12), i = Math.round(inch - f * 12); return i ? `${f} ft ${i} in.` : `${f} ft`; };
 $('big-figs').innerHTML = [
   [fmt(dims.gray) + ' sq ft', 'Indoors (12 floor cells)'],
   [fmt(dims.total) + ' sq ft', 'Platform, patio and deck included'],
   [fmt(dims.l4) + ' ft', '4 in. square tube'],
   [fmt(dims.l3) + ' ft', '3 × 2 in. tube'],
-  [fmt((dims.col - dims.deck) / 12, 0) + ' ft', 'Spine above the deck'],
+  [ftin(dims.ridge - dims.deck), 'Ridge above the deck'],
   ['54', 'Legs on 10 in. plates'],
-  ['12 in.', 'Living-wing roof fall'],
-  [fmt((dims.roofTower - dims.roofEast) / 12, 0) + ' ft', 'Bedroom-wing roof fall'],
+  [fmt(dims.roofPitch, 0) + '°', 'Roof pitch, both sides'],
+  [ftin(dims.eave - dims.deck), 'Walls at the eaves'],
 ].map(([v, k]) => `<div class="big"><b>${v}</b><span>${k}</span></div>`).join('');
 const members = (s) => s.id === 'footings' ? 54 : s.id === 'floors' ? 15 : s.items.length;
 $('stage-table').innerHTML = `<thead><tr><th>#</th><th>Assembly</th><th class="num">Members</th><th class="num">4 in. tube, ft</th><th class="num">3 × 2 tube, ft</th><th class="num">Running 4 in.</th><th class="num">Running 3 × 2</th></tr></thead><tbody>` +

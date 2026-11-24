@@ -18,7 +18,7 @@ References for the renderings: `refs/` (rendered by `refs.html` + `src/refs.js`)
 
 Layout: living area in the wider 3 x 2 left block (frame as designed, behind the patio); two 16 ft x 12 ft bedrooms in the deeper 2 x 3 right block, split at y = 147.5 in. with the interior and east posts moved onto that line. Glass on every exterior wall.
 
-Key numbers: gray living area 720.8 sq ft · entire platform 1,666.5 sq ft · 4 in. x 4 in. tube 1,355.2 ft · 3 in. x 2 in. tube 217.4 ft.
+Key numbers: gray living area 720.8 sq ft · entire platform 1,666.5 sq ft · 4 in. x 4 in. tube 1,429.5 ft · 3 in. x 2 in. tube 210.8 ft · gable roof 26° each way, eaves 10 ft, ridge 20 ft 2 in. above the deck (the earlier flat + shed roof is kept in `tools/export_model_shed.py`).
 
 ## Link previews (iMessage, Slack, social)
 

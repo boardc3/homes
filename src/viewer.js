@@ -107,10 +107,10 @@ export function initViewer() {
   }
   // warm interior glow seen through the glass
   const glow = new THREE.MeshBasicMaterial({ color: 0xf1d9b0, transparent: true, opacity: 0 }); realMats.add(glow); glow.userData.full = .55;
-  for (const [x0, x1, y0, y1, h] of [[6, 289, 6, 192, 118], [313, 499, 6, 289, 150]]) {
-    const b = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0, h, y1 - y0), glow);
-    const c = P3([(x0 + x1) / 2, (y0 + y1) / 2, 15.5 + h / 2]); b.position.set(...c); real.add(b);
-  }
+  // the glow fills each room up to the gable: top 6 in. under the roof line, split at the ridge
+  const TP = Math.tan(dims.roofPitch * Math.PI / 180), G = (x) => dims.ridge - Math.abs(x - dims.ridgeX) * TP - 6;
+  const glowBox = (x0, x1, y0, y1) => [[x0, y0, 15.5], [x1, y0, 15.5], [x1, y1, 15.5], [x0, y1, 15.5], [x0, y0, G(x0)], [x1, y0, G(x1)], [x1, y1, G(x1)], [x0, y1, G(x0)]];
+  for (const v of [glowBox(6, dims.ridgeX, 6, 192), glowBox(dims.ridgeX, 289, 6, 192), glowBox(313, 499, 6, 289)]) real.add(new THREE.Mesh(geoUV(v, 96), glow));
   // setting: meadow and a lake to the north (the patio side)
   const meadow = new THREE.Mesh(new THREE.CircleGeometry(5200, 96), new THREE.MeshStandardMaterial({ map: T.meadow, roughness: 1, transparent: true }));
   T.meadow.repeat.set(26, 26); meadow.rotation.x = -Math.PI / 2; meadow.position.y = -1.2; meadow.receiveShadow = true; real.add(meadow); realMats.add(meadow.material); meadow.material.userData.full = 1;
@@ -159,7 +159,7 @@ export function initViewer() {
     document.getElementById('viewer').classList.toggle('is-real', e > .5);
   }
   const NOTE = {
-    real: 'Finished: glass on every wall, ipe deck, Corten spine, standing-seam roofs. Living wing behind the patio, two bedrooms under the shed roof.',
+    real: 'Finished: glass on every wall, ipe deck, Corten spine, and one standing-seam gable roof pitched 26° each way. Living wing behind the patio, two bedrooms on the east side.',
     beams: `The frame as drawn: <b>${fmt(dims.l4)} ft</b> of 4 in. tube and <b>${fmt(dims.l3)} ft</b> of 3 × 2 in. tube on 54 legs.`,
   };
   const setNote = () => { document.getElementById('viewer-note').innerHTML = NOTE[mode]; };

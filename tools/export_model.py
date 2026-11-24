@@ -65,90 +65,77 @@ area_tot=((295+R)*(D+2*R)+(W-307+R)*(D+2*R))   # two blocks incl border, gap exc
 (lambda *a:None)('area incl border',area_tot,area_tot/144, 'overall',rx-lx,ty-by_)
 
 DECK=F+T
-H11=132;H14=168
-
 import math
-def roof(x): return DECK+168-(max(x,311)-311)*(48/194)
+# ---------------- GABLE ROOF: 26 deg each way, ridge down the middle of the platform (north-south)
+PITCH=26.0; TP=math.tan(math.radians(PITCH))
+XC=W/2                      # ridge line x = 252.5 (middle of the 505 in. platform)
+EAVE=120                    # 10 ft above the deck at the west and east walls (x=2, x=503)
+HALF=XC-2
+def G(x): return DECK+EAVE+(HALF-abs(x-XC))*TP      # top of steel under the roof at any x
+RIDGE=G(XC)
+def roof(x): return G(x)
+def rz(x,y): return G(x)
+LTOP=G(2)
 yb_n=2-R; yt_n=D-2+R
-def drop(y): return 0.0   # right block: no N-S rake (already slanted E-W)
-def dL(y): return max(0.0,min(12.0,12*((yt_n+2)-y)/((yt_n+2)-(yb_n-2))))   # left block rake: 0 at patio edge (y=196), 12 in. at south end of canopy
-def rz(x,y): return roof(x)-drop(y)
-def tilt_y(x,y1,y2,w,t,kind='r'):
-    global LEN,CNT
-    z1,z2=rz(x,y1),rz(x,y2); h=w/2
-    FR_SLOPE.append([(x-h,y1,z1-t),(x+h,y1,z1-t),(x+h,y2,z2-t),(x-h,y2,z2-t),(x-h,y1,z1),(x+h,y1,z1),(x+h,y2,z2),(x-h,y2,z2)])
-    return math.hypot(y2-y1,z2-z1)
-def tiltL(x,y1,y2,w,t):
-    z1,z2=LTOP-dL(y1),LTOP-dL(y2); h=w/2
-    FR_SLOPE.append([(x-h,y1,z1-t),(x+h,y1,z1-t),(x+h,y2,z2-t),(x-h,y2,z2-t),(x-h,y1,z1),(x+h,y1,z1),(x+h,y2,z2),(x-h,y2,z2)])
-    return math.hypot(y2-y1,z2-z1)
 MARK={}; CAN=0
 FR_BOX=[];FR_SLOPE=[];LEN={'post':0,'rail':0};CNT={'post':0,'rail':0}
-LTOP=DECK+H11
+def xs_verts(xa,xb,y,w,t):
+    """8-vertex boxes for a member along x whose top follows the roof; split at the ridge"""
+    if xa<XC<xb: return xs_verts(xa,XC,y,w,t)+xs_verts(XC,xb,y,w,t)
+    za,zb=G(xa),G(xb); h=w/2
+    return [[(xa,y-h,za-t),(xb,y-h,zb-t),(xb,y+h,zb-t),(xa,y+h,za-t),(xa,y-h,za),(xb,y-h,zb),(xb,y+h,zb),(xa,y+h,za)]]
+def xslope(xa,xb,y,w,t):
+    vs=xs_verts(xa,xb,y,w,t); FR_SLOPE.extend(vs)
+    return sum(math.hypot(v[1][0]-v[0][0],v[4][2]-v[5][2]) for v in vs)
+def yflat(x,ya,yb_,w,t,kind='r'):
+    """member along y: level, top at G(x)"""
+    FR_BOX.append((kind,x-w/2,ya,w,yb_-ya,G(x)-t,G(x))); return yb_-ya
 MARK['start']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# left posts + flat top rails
+# LIVING WING: 9 posts up to the roof; every row is a portal frame peaking at the ridge
 for x in (2,99,196):
     for y in (2,99,196):
-        FR_BOX.append(('p',x-2,y-2,4,4,DECK,LTOP-4-dL(y))); LEN['post']+=LTOP-4-dL(y)-DECK; CNT['post']+=1
+        FR_BOX.append(('p',x-2,y-2,4,4,DECK,G(x)-4)); LEN['post']+=G(x)-4-DECK; CNT['post']+=1
 for y in (2,99,196):
-    for xa,xb in ((2,99),(99,196),(196,293)):
-        FR_BOX.append(('r',xa+2,y-2,xb-xa-4,4,LTOP-4-dL(y),LTOP-dL(y))); LEN['rail']+=xb-xa-4; CNT['rail']+=1
-for x in (2,99,196,293):
+    for xa,xb in ((4,97),(101,194),(198,291)):
+        LEN['rail']+=xslope(xa,xb,y,4,4); CNT['rail']+=1
+for x in (2,99,196):
     for ya,yb_ in ((2,99),(99,196)):
-        LEN['rail']+=tiltL(x,ya+2,yb_-2,4,4); CNT['rail']+=1
+        LEN['rail']+=yflat(x,ya+2,yb_-2,4,4); CNT['rail']+=1
+for ya,yb_ in ((2,99),(99,196)):                       # ridge beam
+    LEN['rail']+=yflat(XC,ya+2,yb_-2,4,4); CNT['rail']+=1
 MARK['left_end']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# right posts  (deeper 2x3 block = two bedrooms, 16 ft x 12 ft each, partition at y=147.5;
-# the posts that stood mid-room at (406,99),(406,196) and the east posts at (503,99),(503,196) move onto the partition line)
+# BEDROOM WING: posts in the partition line and the outer walls; rafters fall east at the same 26 deg
 RPOSTS=[(x,y) for x in (406,503) for y in (2,147.5,293)]
 for x,y in RPOSTS:
-    FR_BOX.append(('p',x-2,y-2,4,4,DECK,rz(x,y)-4)); LEN['post']+=rz(x,y)-4-DECK; CNT['post']+=1
-# right y-rails at roof height of their x (x=309 sits on the red tower columns at 2/99/196/293)
-for x,segs in ((309,((2,99),(99,196),(196,293))),(406,((2,147.5),(147.5,293))),(503,((2,147.5),(147.5,293)))):
-    for ya,yb_ in segs:
-        LEN['rail']+=tilt_y(x,ya+2,yb_-2,4,4); CNT['rail']+=1
-# right sloped x-rails (perimeter rows + the partition row)
+    FR_BOX.append(('p',x-2,y-2,4,4,DECK,G(x)-4)); LEN['post']+=G(x)-4-DECK; CNT['post']+=1
+for x in (406,503):
+    for ya,yb_ in ((2,147.5),(147.5,293)):
+        LEN['rail']+=yflat(x,ya+2,yb_-2,4,4); CNT['rail']+=1
 for y in (2,147.5,293):
     for xa,xb in ((311,404),(408,501)):
-        za,zb=roof(xa)-drop(y),roof(xb)-drop(y)
-        v=[(xa,y-2,za-4),(xb,y-2,zb-4),(xb,y+2,zb-4),(xa,y+2,za-4),(xa,y-2,za),(xb,y-2,zb),(xb,y+2,zb),(xa,y+2,za)]
-        FR_SLOPE.append(v); LEN['rail']+=math.hypot(xb-xa,zb-za); CNT['rail']+=1
-
+        LEN['rail']+=xslope(xa,xb,y,4,4); CNT['rail']+=1
 MARK['right_end']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-CAN=0
-def can_box(x0,y0,w,h,z1):
-    global CAN
-    if w==4: x0,w=x0+1,2
-    else: y0,h=y0+1,2
-    FR_BOX.append(('c',x0,y0,w,h,z1-3,z1)); CAN+=max(w,h)
-def can_slope(xa,xb,y):
-    global CAN
-    za,zb=roof(xa)-drop(y),roof(xb)-drop(y)
-    FR_SLOPE.append([(xa,y-1,za-3),(xb,y-1,zb-3),(xb,y+1,zb-3),(xa,y+1,za-3),(xa,y-1,za),(xb,y-1,zb),(xb,y+1,zb),(xa,y+1,za)])
-    CAN+=math.hypot(xb-xa,zb-za)
+# CANOPY: 3 x 2 in. joists every ~4 ft over the deck border, on the roof pitch
+def can_x(xa,xb,y):
+    global CAN; CAN+=xslope(xa,xb,y,2,3)
+def can_y(x,ya,yb_):
+    global CAN; CAN+=yflat(x,ya,yb_,2,3,'c')
 MARK['can0']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# LEFT canopy (flat, 11 ft): joists only, ~every 48.5 in., over west + south perimeter squares
-xo=xl0; yo=yb
-for y in (2,50.5,99,147.5,196): can_box(xo-2,y-2,0-(xo-2),4,LTOP-dL(y))          # west joists
-for x in (2,50.5,99,147.5,196,244.5,293): CAN+=tiltL(x,yo-2,0,2,3)      # south joists (raked)
+for y in (2,50.5,99,147.5,196): can_x(xl0-2,0,y)                          # west joists
+for x in (2,50.5,99,147.5,196,XC,293): can_y(x,yb-2,0)                    # south joists (incl. the ridge)
 MARK['can_sw_end']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# LEFT canopy extension: over the white patio cells + north border (top-left quadrant)
-for x in (2,50.5,99,147.5,196,244.5,293): CAN+=tiltL(x,198,yt+2,2,3)        # north joists
-for y in (244.5,293): can_box(xo-2,y-2,0-(xo-2),4,LTOP-dL(y))                            # extra west joists
+for x in (2,50.5,99,147.5,196,293): can_y(x,198,yt+2)                     # north joists over the patio
+for y in (244.5,293): can_x(xl0-2,0,y)                                    # extra west joists
 MARK['can_patio_end']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# RIGHT canopy (follows roof slope): joists only, south, east, north
-xe=xr1
-for x in (309,357.5,406,454.5,503):
-    CAN+=tilt_y(x,0,yb-2,2,3); CAN+=tilt_y(x,295,yt+2,2,3)       # south + north joists on the continuous slope
-for y in (2,50.5,99,147.5,196,244.5,293): can_slope(505,xe+2,y)                   # east joists
-
+for x in (309,357.5,406,454.5,503): can_y(x,yb-2,0); can_y(x,295,yt+2)    # south + north joists
+for y in (2,50.5,99,147.5,196,244.5,293): can_x(505,xr1+2,y)              # east joists
 MARK['can_right_end']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
-# PERIMETER 4x4 edge tube + 4x4 posts, top-left white quadrant canopy ONLY
+# PATIO EDGE: 4 in. beam along the north edge, peaking at the ridge, on three posts and the spine column
 def post(px,py,ztop):
     FR_BOX.append(('c',px-2,py-2,4,4,DECK,ztop)); LEN['post']+=ztop-DECK; CNT['post']+=1
-def edge_box(x0,y0,w,h,zt):
-    FR_BOX.append(('c',x0,y0,w,h,zt-4,zt)); LEN['rail']+=max(w,h); CNT['rail']+=1
-edge_box(xl0-2,yt-2,293+2-(xl0-2),4,LTOP-dL(yt))                  # north (front) edge only
-for x in (2,99,196,293): post(x,yt,LTOP-4-dL(yt))      # every other canopy upright removed
+LEN['rail']+=xslope(xl0-2,291,yt,4,4); CNT['rail']+=1
+for x in (2,99,196): post(x,yt,G(x)-4)
+LEN['rail']+=yflat(XC,198,yt-2,4,4); CNT['rail']+=1                       # ridge beam carried on over the patio
 MARK['end']=(len(FR_BOX),len(FR_SLOPE),LEN['post']+LEN['rail'],CAN)
 FRTOT=LEN['post']+LEN['rail']
 print(CNT,LEN,FRTOT,FRTOT/12)
@@ -181,14 +168,18 @@ for i,j,bb in cells:
     x0=T+i*P+bb;y0=T+j*P
     fl.append(('patio' if (bb==0 and j==2) else 'floor',hexa(x0,y0,I,I,DECK-1.5,DECK-0.5)))
 add('floors','Floor and patio',fl,0,0,'Twelve floor cells for the rooms. The three open cells at the north end become the patio.',len(fl))
-tw=[('col',hexa(cx-2,cy-2,4,4,DECK,CT)) for cx,cy in cols]+[('cap',hexa(x,y,w,h,CT,CT+T)) for x,y,w,h in rails+rungs]
-add('tower','Spine columns',tw,(coltot+captot)/12,0,'Twelve columns rise 15 ft above the deck where the two wings meet.',len(tw))
-add('left','Living wing',seg('start','left_end'),L4('start','left_end'),0,'The wider wing, behind the patio: 11 ft at the patio edge, falling 12 in. to the south for drainage.',0)
-add('right','Bedroom wing',seg('left_end','right_end'),L4('left_end','right_end'),0,'The deeper wing: a shed roof from 14 ft at the spine to 10 ft at the east edge. Its interior posts sit in the wall between the two bedrooms.',0)
-add('canopy_sw','Canopy',seg('can0','can_sw_end'),0,LC('can0','can_sw_end'),'3 by 2 in. joists every 4 ft over the west and south deck, following the roof fall.',0)
+coltops={cx:G(cx)-4 for cx in (L[-1],RV[0])}
+tw=[('col',hexa(cx-2,cy-2,4,4,DECK,coltops[cx])) for cx,cy in cols]
+tw+=[('cap',hexa(x-2,yb-2,4,yt-yb+4,G(x)-4,G(x))) for x in (L[-1],RV[0])]
+for y in (yb,2,99,196,293,yt): tw+=[('cap',v) for v in xs_verts(L[-1]+2,RV[0]-2,y,4,4)]
+coltot=sum(coltops[cx]-DECK for cx,cy in cols); captot=2*(yt-yb+4)+6*(RV[0]-L[-1]-4)/math.cos(math.radians(PITCH))
+add('tower','Spine columns',tw,(coltot+captot)/12,0,f'Twelve columns rise to the roof where the two wings meet, about {round((G(L[-1])-DECK)/12)} ft above the deck.',len(tw))
+add('left','Living wing',seg('start','left_end'),L4('start','left_end'),0,f'The wider wing, behind the patio. Every frame is a gable: 10 ft at the west wall, rising at {PITCH:g}° to the ridge, {int((RIDGE-DECK)//12)} ft {round((RIDGE-DECK)%12)} in. above the deck.',0)
+add('right','Bedroom wing',seg('left_end','right_end'),L4('left_end','right_end'),0,f'The deeper wing. The roof falls at the same {PITCH:g}° from the spine to 10 ft at the east wall. Its interior posts sit in the wall between the two bedrooms.',0)
+add('canopy_sw','Canopy',seg('can0','can_sw_end'),0,LC('can0','can_sw_end'),'3 by 2 in. joists every 4 ft over the west and south deck, on the roof pitch.',0)
 add('canopy_patio','Patio canopy',seg('can_sw_end','can_patio_end'),0,LC('can_sw_end','can_patio_end'),'The canopy carries on over the patio and the north deck.',0)
 add('canopy_right','Bedroom canopy',seg('can_patio_end','can_right_end'),0,LC('can_patio_end','can_right_end'),'Joists over the deck around the bedroom wing.',0)
-add('edge','Patio edge',seg('can_right_end','end'),L4('can_right_end','end'),0,'A 4 in. beam along the north edge of the patio, on four slim posts.',0)
+add('edge','Patio edge',seg('can_right_end','end'),L4('can_right_end','end'),0,'A 4 in. beam along the north edge of the patio, peaking at the ridge, on three slim posts and the spine.',0)
 for st in stages: st['count']=len(st['items'])
 tot4_all=sum(s['l4'] for s in stages); totc=sum(s['l3'] for s in stages)
 gray=12*I*I/144; total=(W+2*R)*(D+2*R)/144
@@ -196,8 +187,8 @@ print('totals',tot4_all,totc,(10548+FRTOT)/12,CAN/12,gray,total, tot4/12)
 cum4=cum3=0
 for s in stages:
     cum4+=s['l4']; cum3+=s['l3']; s['cum4']=round(cum4,1); s['cum3']=round(cum3,1)
-dims=dict(deck=DECK,gap=GAP,pitch=P,cell=I,tube=T,ring=R,foot=F,platW=W,platD=D,overallW=xr1-xl0+4,overallH=yt-yb+4,ltop=LTOP,col=CT,rake=12,
- gray=round(gray,2),total=round(total*1.0,2),l4=round(cum4,1),l3=round(cum3,1),roofTower=roof(311),roofEast=roof(505),
+dims=dict(deck=DECK,gap=GAP,pitch=P,cell=I,tube=T,ring=R,foot=F,platW=W,platD=D,overallW=xr1-xl0+4,overallH=yt-yb+4,eave=DECK+EAVE,ridge=round(RIDGE,2),ridgeX=XC,roofPitch=PITCH,col=round(G(L[-1]),2),
+ gray=round(gray,2),total=round(total*1.0,2),l4=round(cum4,1),l3=round(cum3,1),
  xmin=xl0-2,xmax=xr1+2,ymin=yb-2,ymax=yt+2)
 json.dump(dict(stages=stages,dims=dims),open('/home/claude/site/data/model.json','w'),separators=(',',':'))
 print([ (s['id'],len(s['items']),s['l4'],s['l3']) for s in stages])
@@ -219,7 +210,7 @@ for name,(hf,df,asc) in views.items():
         except Exception: continue
         pp=P2[hh.vertices]; xs+= [a for a,b in pp]
         polys.append((c,pp))
-    x0=min(xs)-24;x1=max(xs)+24; zmax=CT+T+24
+    x0=min(xs)-24;x1=max(xs)+24; zmax=RIDGE+24
     out=[f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{x0:.1f} {-zmax:.1f} {x1-x0:.1f} {zmax+30:.1f}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="{name} elevation">',
          f'<line x1="{x0:.1f}" y1="0" x2="{x1:.1f}" y2="0" stroke="#555" stroke-width="0.8"/>']
     for c,pp in polys:
@@ -259,26 +250,24 @@ for cx,cy in nodes: BO.append(dict(c='leg',v=r(hexa(cx-2,cy-2,4,4,0,F))))
 for k,x,y,w,h,z0,z1 in FR_BOX: BO.append(dict(c='steel',v=r(hexa(x,y,w,h,z0,z1))))
 for vs in FR_SLOPE: BO.append(dict(c='steel',v=r(list(vs))))
 # spine: the red tower, clad as a weathering-steel fin between the two blocks
-bx('spine',291,311,OY0,OY1,DECK+1,CT+T)
-# LEFT roof: one slab over frame + canopy, top flush with joist tops, 1 ft fall N->S
-quad_slab('roof',OX0,291,OY0,OY1,lambda x,y: LTOP-dL(min(max(y,yb-2),yt+2))+5,9)
-# RIGHT roof: sloped 14 ft at tower -> 10 ft at east edge
-quad_slab('roof',311,OX1,OY0,OY1,lambda x,y: roof(x)+5,9)
+# ONE GABLE ROOF over the whole house: 26 deg each way from a ridge down the middle
+quad_slab('roof',OX0,XC,OY0,OY1,lambda x,y: G(x)+5,9)
+quad_slab('roof',XC,OX1,OY0,OY1,lambda x,y: G(x)+5,9)
 # walls (inset 1 in. inside the post line). left block: N glass, W cedar, S cedar ; right: N glass, E glass, S cedar
 def wall(c,x0,x1,y0,y1,top):
     zt0,zt1=top(x0,y0),top(x1,y1); z0=DECK+1.3
     v=[(x0,y0,z0),(x1,y0,z0),(x1,y1,z0),(x0,y1,z0),(x0,y0,zt0),(x1,y0,zt1),(x1,y1,zt1),(x0,y1,zt0)]
     BO.append(dict(c=c,v=r(v)))
-LT=lambda x,y: LTOP-4-dL(y)
-RT=lambda x,y: roof(x)-4
+LT=RT=lambda x,y: G(x)-4
 # GLASS EVERYWHERE: every exterior wall is floor-to-ceiling glass in black steel frames
-wall('glass',4,291,195,197,LT)        # living north (to patio + lake)
+wall('glass',4,XC,195,197,LT); wall('glass',XC,291,195,197,LT)    # living north (to patio), split at the ridge
 wall('glass',1,3,4,194,LT)            # living west
-wall('glass',4,291,1,3,LT)            # living south
+wall('glass',4,XC,1,3,LT); wall('glass',XC,291,1,3,LT)            # living south, split at the ridge
 wall('glass',311,501,292,294,RT)      # bedrooms north (lake)
 wall('glass',502,504,4,291,RT)        # bedrooms east
 wall('glass',311,501,1,3,RT)          # bedrooms south
 wall('wall',311,501,146,149,RT)       # partition between the two bedrooms (posts at y=147.5 sit inside it)
+wall('spine',291,311,OY0,OY1,RT)      # Corten spine fin, full length, up to the roof
 
 # ---------- FURNITURE LAYOUT (plan-accurate; floor at DECK+1.3)
 FL=DECK+1.3

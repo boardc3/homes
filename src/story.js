@@ -17,7 +17,7 @@ const stageStart = (s) => P_FRAME0 + (s - 1) * SPAN;
 const ENC = [                         // enclosure layers, in build order
   { key: 'deck',  kinds: ['deck', 'floor'], t: 'Deck', n: 'A deck all the way round: 1,666.5 sq ft of platform, 720.8 of it indoors.' },
   { key: 'walls', kinds: ['cedar', 'glass', 'wall'], t: 'Glass', n: 'Every outside wall is glass, because daylight is the one finish that costs nothing. One wall splits the bedroom wing into two 16 by 12 ft rooms.' },
-  { key: 'roofs', kinds: ['roof'], t: 'Roofs', n: 'A low roof over the living wing, a tall shed roof over the bedrooms, deep overhangs to keep the sun off the glass.' },
+  { key: 'roofs', kinds: ['roof'], t: 'Roofs', n: 'One gable roof over everything, 26° each way to a ridge down the middle, with deep overhangs to keep the sun off the glass.' },
   { key: 'spine', kinds: ['spine'], t: 'Corten spine', n: 'The columns that carry it all, wrapped in weathering steel that only looks better with age.' },
 ];
 const ENC_SPAN = (P_ENC1 - P_FRAME1) / ENC.length;
