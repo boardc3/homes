@@ -1,0 +1,98 @@
+[
+ {
+  "index": 0,
+  "src_job": "747985f3-1cdc-46fe-abd5-96cbb961b122",
+  "feature_wall": "limestone",
+  "kind": "stone"
+ },
+ {
+  "index": 1,
+  "src_job": "268308cf-3740-40f4-a4bf-55d33f227a5b",
+  "feature_wall": "terracotta brick",
+  "kind": "brick"
+ },
+ {
+  "index": 2,
+  "src_job": "9a9a8e28-b951-410c-8a63-ecc195df0a7f",
+  "feature_wall": "travertine",
+  "kind": "stone"
+ },
+ {
+  "index": 3,
+  "src_job": "a08e542c-e422-4da1-942c-f1e7f39431ae",
+  "feature_wall": "limewashed gray brick",
+  "kind": "brick"
+ },
+ {
+  "index": 4,
+  "src_job": "c16c554a-723c-4a27-b7fc-02f2ed62790a",
+  "feature_wall": "slate ledgestone",
+  "kind": "stone"
+ },
+ {
+  "index": 5,
+  "src_job": "f5ba1bef-aa9e-4874-af5e-d32b46394458",
+  "feature_wall": "red brick",
+  "kind": "brick"
+ },
+ {
+  "index": 6,
+  "src_job": "a2aa3e6e-9498-46f9-a614-5f48fd0948ac",
+  "feature_wall": "basalt",
+  "kind": "stone"
+ },
+ {
+  "index": 7,
+  "src_job": "d71c830f-a687-4f7b-a674-772383171289",
+  "feature_wall": "sandstone",
+  "kind": "stone"
+ },
+ {
+  "index": 8,
+  "src_job": "38a51b8b-ad21-4e2d-90b6-31182406d6e9",
+  "feature_wall": "handmade red-brown brick",
+  "kind": "brick"
+ },
+ {
+  "index": 9,
+  "src_job": "a9c73dfc-dcd2-4d61-9660-fb71ac5589a9",
+  "feature_wall": "clinker brick",
+  "kind": "brick"
+ },
+ {
+  "index": 10,
+  "src_job": "626d63f1-db8b-4fe3-bed1-fb06af6bf4c9",
+  "feature_wall": "fieldstone",
+  "kind": "stone"
+ },
+ {
+  "index": 11,
+  "src_job": "87ff31fb-ebe1-4284-9ba0-22049a179e76",
+  "feature_wall": "white limewashed brick",
+  "kind": "brick"
+ },
+ {
+  "index": 12,
+  "src_job": "4b65d237-78f7-4937-b3aa-83adcaf5bb4c",
+  "feature_wall": "local fieldstone",
+  "kind": "stone"
+ },
+ {
+  "index": 13,
+  "src_job": "6f68f458-b253-445e-9d25-177f6577cf9f",
+  "feature_wall": "charcoal brick",
+  "kind": "brick"
+ },
+ {
+  "index": 14,
+  "src_job": "e8661792-bc34-477a-abeb-bc9eb49f6a2d",
+  "feature_wall": "honey sandstone",
+  "kind": "stone"
+ },
+ {
+  "index": 15,
+  "src_job": "e398bd7a-1fe3-481d-97ea-1253925d7e7e",
+  "feature_wall": "pale gray-white brick",
+  "kind": "brick"
+ }
+]
