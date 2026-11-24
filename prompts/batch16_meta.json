@@ -1,0 +1,98 @@
+[
+ {
+  "index": 0,
+  "location": "laguna",
+  "view": "sw",
+  "palette": "Coastal limestone"
+ },
+ {
+  "index": 1,
+  "location": "laguna",
+  "view": "nw",
+  "palette": "Terracotta and white"
+ },
+ {
+  "index": 2,
+  "location": "laguna",
+  "view": "ne",
+  "palette": "Travertine"
+ },
+ {
+  "index": 3,
+  "location": "laguna",
+  "view": "se",
+  "palette": "Bluestone"
+ },
+ {
+  "index": 4,
+  "location": "mountains",
+  "view": "sw",
+  "palette": "Slate lodge"
+ },
+ {
+  "index": 5,
+  "location": "mountains",
+  "view": "nw",
+  "palette": "Granite and red brick"
+ },
+ {
+  "index": 6,
+  "location": "mountains",
+  "view": "ne",
+  "palette": "Basalt and white brick"
+ },
+ {
+  "index": 7,
+  "location": "mountains",
+  "view": "se",
+  "palette": "Warm sandstone"
+ },
+ {
+  "index": 8,
+  "location": "woods",
+  "view": "sw",
+  "palette": "Honey limestone and hex tile"
+ },
+ {
+  "index": 9,
+  "location": "woods",
+  "view": "nw",
+  "palette": "Clinker brick"
+ },
+ {
+  "index": 10,
+  "location": "woods",
+  "view": "ne",
+  "palette": "Basketweave brick"
+ },
+ {
+  "index": 11,
+  "location": "woods",
+  "view": "se",
+  "palette": "Terrazzo"
+ },
+ {
+  "index": 12,
+  "location": "fingerlakes",
+  "view": "sw",
+  "palette": "Farmhouse buff brick"
+ },
+ {
+  "index": 13,
+  "location": "fingerlakes",
+  "view": "nw",
+  "palette": "Gray limestone"
+ },
+ {
+  "index": 14,
+  "location": "fingerlakes",
+  "view": "ne",
+  "palette": "Terracotta tile"
+ },
+ {
+  "index": 15,
+  "location": "fingerlakes",
+  "view": "se",
+  "palette": "Marble-look porcelain"
+ }
+]
